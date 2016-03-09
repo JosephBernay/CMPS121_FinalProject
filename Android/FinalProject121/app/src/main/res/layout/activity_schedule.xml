@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".LabView">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/imageView"
+        android:src="@drawable/computerlab" />
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnCount="8">
+
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/SEPHIROTH"
+            android:tag="SEPHIROTH"
+            android:onClick="ComputerInfo"
+            android:layout_column="0"
+            android:layout_row="0" />
+
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/ZELDA"
+            android:tag="ZELDA"
+            android:onClick="ComputerInfo" />
+
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/SEAMUS"
+            android:tag="SEAMUS"
+            android:onClick="ComputerInfo" />
+
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/LINK"
+            android:tag="LINK"
+            android:onClick="ComputerInfo" />
+
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/CMDRKEEN"
+            android:tag="CMDRKEEN"
+            android:onClick="ComputerInfo" />
+
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/VICVIPER"
+            android:tag="VICVIPER"
+            android:onClick="ComputerInfo" />
+
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/MARIO"
+            android:tag="MARIO"
+            android:onClick="ComputerInfo" />
+
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/BRAID"
+            android:tag="BRAID"
+            android:onClick="ComputerInfo" />
+
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/DONKEYKONG"
+            android:tag="DONKEYKONG"
+            android:onClick="ComputerInfo" />
+
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/MASSEFFECT"
+            android:tag="MASSEFFECT"
+            android:onClick="ComputerInfo" />
+
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/HALFLIFE"
+            android:tag="HALFLIFE"
+            android:onClick="ComputerInfo" />
+
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/CALLOFDUTY"
+            android:tag="CALLOFDUTY"
+            android:onClick="ComputerInfo" />
+
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/LEFT4DEAD"
+            android:tag="LEFT4DEAD"
+            android:onClick="ComputerInfo" />
+
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/SNOW"
+            android:tag="SNOW"
+            android:onClick="ComputerInfo" />
+
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/LIGHTNING"
+            android:tag="LIGHTNING"
+            android:onClick="ComputerInfo" />
+    </GridLayout>
+
+</RelativeLayout>
