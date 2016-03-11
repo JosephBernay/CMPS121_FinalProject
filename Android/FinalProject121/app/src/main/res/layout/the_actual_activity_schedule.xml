@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:textAlignment="center">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="30sp"
+        android:textColor="#000000"
+        android:text="Computer Name"
+        android:id="@+id/compName">
+    </TextView>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/compName"
+        android:weightSum="7"
+        android:id="@+id/dayList">
+
+        <Button
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAllCaps="false"
+            android:background="@drawable/day_button_1"
+            android:text="Wed"
+            android:id="@+id/day1" />
+        <Button
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAllCaps="false"
+            android:background="@drawable/day_button_2"
+            android:text="Thu"
+            android:id="@+id/day2" />
+        <Button
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAllCaps="false"
+            android:background="@drawable/day_button_1"
+            android:text="Fri"
+            android:id="@+id/day3" />
+        <Button
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAllCaps="false"
+            android:background="@drawable/day_button_2"
+            android:text="Sat"
+            android:id="@+id/day4" />
+        <Button
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAllCaps="false"
+            android:background="@drawable/day_button_1"
+            android:text="Sun"
+            android:id="@+id/day5" />
+        <Button
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAllCaps="false"
+            android:background="@drawable/day_button_2"
+            android:text="Mon"
+            android:id="@+id/day6" />
+        <Button
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAllCaps="false"
+            android:background="@drawable/day_button_1"
+            android:text="Tue"
+            android:id="@+id/day7" />
+    </LinearLayout>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/timeList"
+        android:layout_below="@+id/dayList"
+        android:layout_above="@+id/scheduleBack"
+        android:stackFromTop="true">
+    </ListView>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        android:textColor="#000000"
+        android:text="Back"
+        android:id="@+id/scheduleBack"/>
+</RelativeLayout>
