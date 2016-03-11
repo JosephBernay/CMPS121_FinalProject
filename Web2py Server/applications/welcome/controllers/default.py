@@ -9,6 +9,8 @@
 #########################################################################
 import base64
 
+KEY = 'GAmaW6d90bvBKDOw60b68e9t10356Dqy'
+
 def index():
     """
     example action using the internationalization operator T and flash
@@ -20,9 +22,13 @@ def index():
     return response.json({'response': 'ok'})
 
 #this gets all messages for a particular computer
-#must be passed: computerName
+#must be passed: computerName, key
 def get_messages():
    try:
+      if request.vars.computerName == None or request.vars.key == None or request.vars.key != KEY:
+         theDict = dict(messageInfo=[])
+         theDict.update({'response':'error'})
+         return response.json(theDict)  
       comp = request.vars.computerName
       rows = db(db.messageData.computerName == comp).select()
       d = []
@@ -41,9 +47,11 @@ def get_messages():
       return response.json(theDict)
 
 #this allows user to post a message to the database and updates the status for that particular computer
-#must be passed: computerName, computerNumber, messageData, problem
+#must be passed: computerName, computerNumber, messageData, problem, key
 def post_message():
    try:
+      if request.vars.computerName == None or request.vars.computerNumber == None or request.vars.messageData == None or request.vars.problem == None or request.vars.key == None or request.vars.key != KEY:
+         return response.json({'response':'error'})
       db.messageData.insert(computerName = request.vars.computerName,
                computerNumber = request.vars.computerNumber,
                messageData = request.vars.messageData,
@@ -61,9 +69,13 @@ def post_message():
       return response.json({'response':'error'})
 
 #this gets the most recent status of a computer
-#must be passed: computerName      
+#must be passed: computerName, key      
 def get_status():
    try:
+      if request.vars.computerName == None or request.vars.key == None or request.vars.key != KEY:
+         theDict = dict(problemInfo={})
+         theDict.update({'response':'error'})
+         return response.json(theDict)
       comp = request.vars.computerName
       rows = db(db.computerStatus.computerName == comp).select()
       d = {}
@@ -79,22 +91,27 @@ def get_status():
       return response.json(theDict)
       
 #this is used to add a user to the database, assuming they don't already exist in it
-#must be passed: email, password      
+#must be passed: email, password, key      
 def add_user():
    try:
+      if request.vars.email == None or request.vars.password == None or request.vars.key == None or request.vars.key != KEY:
+         return response.json({'response':'error'})
       rows = db(db.userData.email == request.vars.email).select()
       if len(rows) != 0:
          return response.json({'response': 'user exists'})
-      db.userData.insert(email = request.vars.email,
-               password = base64.b64encode(request.vars.password))
+      db.userData.update_or_insert((db.userData.email == request.vars.email),
+                                       email = request.vars.email,
+                                       password = base64.b64encode(request.vars.password))
       return response.json({'response':'ok'})
    except:
       return response.json({'response':'error'})
 
 #this is used to check if a user exists in the system
-#must be passed: email, password      
+#must be passed: email, password, key     
 def get_user():
    try:
+      if request.vars.email == None or request.vars.password == None or request.vars.key == None or request.vars.key != KEY:
+         return response.json({'response':'error'})
       rows = db(db.userData.email == request.vars.email).select()
       login = {}
       if len(rows) == 0:
@@ -114,9 +131,13 @@ def get_user():
       
 #this is used to get the schedule for a particular computer
 #NOTE: THIS DATA WILL NEED TO BE PARSED IN-APP FOR ENTRIES WITHIN A CERTAIN DATE (THIS WILL RETURN EVERYTHING)
-#must be passed: computerName
+#must be passed: computerName, key
 def get_schedule():
    try:
+      if request.vars.computerName == None or request.vars.key == None or request.vars.key != KEY:
+         theDict = dict(scheduleInfo=[])
+         theDict.update({'response':'error'})
+         return response.json(theDict)  
       rows = db(db.schedule.computerName == request.vars.computerName).select()
       d = []
       for r in rows:
@@ -134,9 +155,11 @@ def get_schedule():
       return response.json(theDict)
 
 #this allows a user to schedule a computer on a certain date for a particular block of time
-#must be passed: computerName, beginTime, endTime, dateReserved, email
+#must be passed: computerName, beginTime, endTime, dateReserved, email, key
 def schedule_computer():
    try:
+      if request.vars.computerName == None or request.vars.beginTime == None or request.vars.endTime == None or request.vars.dateReserved == None or request.vars.email == None or request.vars.key == None or request.vars.key != KEY:
+         return response.json({'response': 'ok'})
       db.schedule.insert(computerName = request.vars.computerName,
                beginTime = request.vars.beginTime,
                endTime = request.vars.endTime,
@@ -146,6 +169,7 @@ def schedule_computer():
    except:
       return response.json({'response':'error'})
       
+#----------------------------------FOR DEVELOPMENT PURPOSES-----------------------------------------------
 def wipe_server():
    try:
       if request.vars.server == 'messageData':
@@ -156,9 +180,55 @@ def wipe_server():
          db(db.userData).delete()
       if request.vars.server == 'scheduleData':
          db(db.schedule).delete()
+      if request.vars.server == 'all':
+         db(db.messageData).delete()
+         db(db.computerStatus).delete()
+         db(db.userData).delete()
+         db(db.schedule).delete()
       return response.json({'response': 'ok'})
    except:
       return response.json({'response': 'error'})
+
+def initialize_default_data():
+   try:
+      db.userData.insert(email = 'jbernay@ucsc.edu', password = base64.b64encode('temp'))
+      db.userData.insert(email = 'aparvis@ucsc.edu', password = base64.b64encode('temp'))
+      db.userData.insert(email = 'srsmall@ucsc.edu', password = base64.b64encode('temp'))
+      db.userData.insert(email = 'lccunnin@ucsc.edu', password = base64.b64encode('temp'))      
+      db.messageData.insert(computerName = 'SNOW', computerNumber = '364', messageData = 'Initialization of server data.', problem = 'fixed')
+      db.messageData.insert(computerName = 'LIGHTNING', computerNumber = '364', messageData = 'Initialization of server data.', problem = 'fixed')
+      db.messageData.insert(computerName = 'SEPHIROTH', computerNumber = '368', messageData = 'Initialization of server data.', problem = 'fixed')
+      db.messageData.insert(computerName = 'ZELDA', computerNumber = '368', messageData = 'Initialization of server data.', problem = 'fixed')
+      db.messageData.insert(computerName = 'SEAMUS', computerNumber = '368', messageData = 'Initialization of server data.', problem = 'fixed')
+      db.messageData.insert(computerName = 'LINK', computerNumber = '368', messageData = 'Initialization of server data.', problem = 'fixed')
+      db.messageData.insert(computerName = 'CMDRKEEN', computerNumber = '368', messageData = 'Initialization of server data.', problem = 'fixed')
+      db.messageData.insert(computerName = 'VICVIPER', computerNumber = '368', messageData = 'Initialization of server data.', problem = 'fixed')
+      db.messageData.insert(computerName = 'MARIO', computerNumber = '368', messageData = 'Initialization of server data.', problem = 'fixed')
+      db.messageData.insert(computerName = 'BRAID', computerNumber = '368', messageData = 'Initialization of server data.', problem = 'fixed')
+      db.messageData.insert(computerName = 'DONKEYKONG', computerNumber = '368', messageData = 'Initialization of server data.', problem = 'fixed')
+      db.messageData.insert(computerName = 'MASSEFFECT', computerNumber = '366', messageData = 'Initialization of server data.', problem = 'fixed')
+      db.messageData.insert(computerName = 'HALFLIFE', computerNumber = '366', messageData = 'Initialization of server data.', problem = 'fixed')
+      db.messageData.insert(computerName = 'CALLOFDUTY', computerNumber = '366', messageData = 'Initialization of server data.', problem = 'fixed')
+      db.messageData.insert(computerName = 'LEFT4DEAD', computerNumber = '366', messageData = 'Initialization of server data.', problem = 'fixed')      
+      db.computerStatus.insert(computerName = 'SNOW', currentStatus = 'working')
+      db.computerStatus.insert(computerName = 'LIGHTNING', currentStatus = 'working')
+      db.computerStatus.insert(computerName = 'SEPHIROTH', currentStatus = 'working')
+      db.computerStatus.insert(computerName = 'ZELDA', currentStatus = 'working')
+      db.computerStatus.insert(computerName = 'SEAMUS', currentStatus = 'working')
+      db.computerStatus.insert(computerName = 'LINK', currentStatus = 'working')
+      db.computerStatus.insert(computerName = 'CMDRKEEN', currentStatus = 'working')
+      db.computerStatus.insert(computerName = 'VICVIPER', currentStatus = 'working')
+      db.computerStatus.insert(computerName = 'MARIO', currentStatus = 'working')
+      db.computerStatus.insert(computerName = 'BRAID', currentStatus = 'working')
+      db.computerStatus.insert(computerName = 'DONKEYKONG', currentStatus = 'working')
+      db.computerStatus.insert(computerName = 'MASSEFFECT', currentStatus = 'working')
+      db.computerStatus.insert(computerName = 'HALFLIFE', currentStatus = 'working')
+      db.computerStatus.insert(computerName = 'CALLOFDUTY', currentStatus = 'working')
+      db.computerStatus.insert(computerName = 'LEFT4DEAD', currentStatus = 'working')    
+      return response.json({'response':'ok'})
+   except:
+      return response.json({'response':'error'})
+#-------------------------------------------------------------------------------------------------
 
 def user():
     """
