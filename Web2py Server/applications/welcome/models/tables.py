@@ -1,4 +1,5 @@
 from datetime import datetime
+import base64
 
 # database to hold reports that users have posted. 
 db.define_table('messageData',
@@ -16,7 +17,9 @@ db.define_table('computerStatus',
 # database to hold the email and password of each user (password will be encrypted)
 db.define_table('userData',
                   Field('email'),
-                  Field('password'))
+                  Field('password', default=base64.b64encode('temp')))
+                  
+db.userData.password.readable = db.userData.password.writable = False
                   
 # database to hold the times in which each computer is reserved, and the email of who reserved them.
 db.define_table('schedule',
@@ -25,4 +28,8 @@ db.define_table('schedule',
                   Field('endTime'),
                   Field('dateReserved'),
                   Field('email'))
+                  
+db.define_table('adminData',
+                  Field('email'),
+                  Field('password'))
                   

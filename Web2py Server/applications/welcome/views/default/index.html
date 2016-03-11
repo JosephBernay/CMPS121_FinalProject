@@ -1,19 +1,8 @@
 {{left_sidebar_enabled,right_sidebar_enabled=False,('message' in globals())}}
 {{extend 'layout.html'}}
 
-{{block header}}
-    <header class="container-fluid background">
-      <div class="jumbotron text-center">
-        {{if response.title:}}
-        <h1>{{=response.title}}
-          <small>{{=response.subtitle or ''}}</small></h1>
-        {{pass}}
-      </div>
-    </header>
-{{end}}
-
 {{if 'message' in globals():}}
-<h2>{{=message}}</h2>
+<h2>Admin Interface</h2>
 <p class="lead">{{=T('How did you get here?')}}</p>
 <ol>
   <li>{{=T('You are successfully running web2py')}}</li>
@@ -27,11 +16,25 @@
     _href=URL('admin','default','peek',args=(request.application,'views',request.controller,'index.html')))))}}</li>
   <li>{{=T('You can modify this application and adapt it to your needs')}}</li>
 </ol>
-{{elif 'content' in globals():}}
-{{=content}}
-{{else:}}
-{{=BEAUTIFY(response._vars)}}
 {{pass}}
+
+<h2>Admin Interface</h2>
+<h2></h2>
+<div style="height: auto; width: 100%;">
+   <div style="float: left; height: 100%; width: 50%; padding: 20px;">
+      <h4>Authorized Users</h4><br>
+      {{for person in userData:}}
+         {{=A('Revoke Access', _class='btn btn-danger', _href=URL('default', 'delete_user', args=[person['user']]))}}
+         {{=person['user']}}
+         <br><br>
+      {{pass}}
+   </div>
+   <div style="height: 100%; padding: 20px; float:right; width=50%; margin-right: 200px;">
+      <h4>Authorize New User</h4><br>
+      {{=addForm}}
+   </div>
+   <div style="clear: both; height: 1px; overflow: hidden; font-size:0pt; margin-top: -1px;"></div>
+</div>
 
 {{block right_sidebar}}
 <div class="panel panel-info">

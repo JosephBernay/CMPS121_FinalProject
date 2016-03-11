@@ -12,14 +12,26 @@ import base64
 KEY = 'GAmaW6d90bvBKDOw60b68e9t10356Dqy'
 
 def index():
-    """
-    example action using the internationalization operator T and flash
-    rendered by views/default/index.html or views/generic.html
+   if auth.user_id == None:
+      redirect(URL('default', 'user', args=['login']))
+   else:
+      rows = db().select(db.userData.ALL)
+      d = []
+      for r in rows:
+         d.append({'user': r.email})
+      addForm = SQLFORM(db.userData)
+      if addForm.process().accepted:
+         session.flash = T('Added new user')
+         redirect(URL('default', 'index'))
+      return dict(userData=d, addForm=addForm)
+   """
+   example action using the internationalization operator T and flash
+   rendered by views/default/index.html or views/generic.html
 
-    if you need a simple wiki simply replace the two lines below with:
-    return auth.wiki()
-    """
-    return response.json({'response': 'ok'})
+   if you need a simple wiki simply replace the two lines below with:
+   return auth.wiki()
+   """
+   return response.json({'response': 'ok'})
 
 #this gets all messages for a particular computer
 #must be passed: computerName, key
@@ -97,8 +109,8 @@ def add_user():
       if request.vars.email == None or request.vars.password == None or request.vars.key == None or request.vars.key != KEY:
          return response.json({'response':'error'})
       rows = db(db.userData.email == request.vars.email).select()
-      if len(rows) != 0:
-         return response.json({'response': 'user exists'})
+      if len(rows) == 0:
+         return response.json({'response': 'user not authorized'})
       db.userData.update_or_insert((db.userData.email == request.vars.email),
                                        email = request.vars.email,
                                        password = base64.b64encode(request.vars.password))
@@ -169,6 +181,11 @@ def schedule_computer():
    except:
       return response.json({'response':'error'})
       
+def delete_user():
+   db(db.userData.email == request.args(0)).delete()
+   redirect(URL('default', 'index', args=[]))
+   return
+      
 #----------------------------------FOR DEVELOPMENT PURPOSES-----------------------------------------------
 def wipe_server():
    try:
@@ -224,7 +241,8 @@ def initialize_default_data():
       db.computerStatus.insert(computerName = 'MASSEFFECT', currentStatus = 'working')
       db.computerStatus.insert(computerName = 'HALFLIFE', currentStatus = 'working')
       db.computerStatus.insert(computerName = 'CALLOFDUTY', currentStatus = 'working')
-      db.computerStatus.insert(computerName = 'LEFT4DEAD', currentStatus = 'working')    
+      db.computerStatus.insert(computerName = 'LEFT4DEAD', currentStatus = 'working')
+      db.auth_user.update_or_insert(email = 'admin@ucsc.edu', password = 'pbkdf2(1000,20,sha512)$a3c3b38df3459c84$218a620950f4b33654a59205a4caee0f10112af5')
       return response.json({'response':'ok'})
    except:
       return response.json({'response':'error'})
@@ -246,6 +264,10 @@ def user():
         @auth.requires_permission('read','table name',record_id)
     to decorate functions that need access control
     """
+    if request.args(0) != 'login':
+      redirect(URL('default', 'user', args=['login']))
+    if auth.user_id != None:
+      redirect(URL('default', 'index', args=[]))
     return dict(form=auth())
 
 
