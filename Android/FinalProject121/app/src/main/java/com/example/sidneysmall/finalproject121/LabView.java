@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.util.Log;
 import android.widget.ImageButton;
+import android.widget.ListView;
 
 import com.example.sidneysmall.finalproject121.response.ComputerResponse;
 import com.example.sidneysmall.finalproject121.response.MessageInfo;
@@ -31,12 +32,21 @@ import retrofit2.http.Query;
 
 public class LabView extends AppCompatActivity {
 
+
+    public static String ViewedComputer = "null";
+    public static int ViewedSummaryNum = 0;
     private String currentComputer;
     private Dictionary<String, String> CompLocation = new Hashtable<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
+    }
+
+    private MyAdapter adp;
+    private ArrayList<ListElement> aList;
+
+    protected void onResume(){
         CompLocation.put("SNOW", "364");
         CompLocation.put("LIGHTNING", "364");
         CompLocation.put("SEPHIROTH", "368");
@@ -53,6 +63,13 @@ public class LabView extends AppCompatActivity {
         CompLocation.put("CALLOFDUTY", "366");
         CompLocation.put("LEFT4DEAD", "366");
         GetAllStatus();
+        aList = new ArrayList<ListElement>();
+        adp = new MyAdapter(this, R.layout.list_element, aList);
+        ListView problemList = (ListView) findViewById(R.id.listView);
+        problemList.setAdapter(adp);
+        adp.notifyDataSetChanged();
+
+        super.onResume();
     }
 
     public void GetAllStatus(){
@@ -138,6 +155,11 @@ public class LabView extends AppCompatActivity {
                 if (cResponse.body().response.equals("ok")) {
                     for (int i = 0; i < cResponse.body().messageInfo.size(); i++) {
                         Log.i("message", cResponse.body().messageInfo.get(i).messageData);
+                        String ts = cResponse.body().messageInfo.get(i).timeCreated;
+                        String pr = cResponse.body().messageInfo.get(i).problem;
+                        ListElement temp = new ListElement(ts,pr,i);
+                        aList.add(temp);
+                        adp.notifyDataSetChanged();
                     }
                 }
             }
@@ -160,13 +182,18 @@ public class LabView extends AppCompatActivity {
         Intent intent = new Intent(this, Reserve.class);
         intent.putExtra(currentComputer,currentComputer);
         startActivity(intent);
-    }
+    }*/
 
     public void History(View v){
         Intent intent = new Intent(this, History.class);
-        intent.putExtra(currentComputer,currentComputer);
+        intent.putExtra(ViewedComputer,currentComputer);
+        ViewedSummaryNum = (int)v.getTag();
         startActivity(intent);
-    }*/
+    }
+
+    public void BackToView(View v){
+
+    }
 
     public interface CompInfo {
         @GET("get_messages")
