@@ -38,7 +38,7 @@ public class History extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_schedule);
+        setContentView(R.layout.report_history);
     }
 
     protected void onResume(){
@@ -92,6 +92,11 @@ public class History extends AppCompatActivity{
         @GET("get_messages")
         Call<ComputerResponse> getInfo(@Query("computerName") String currentComputer,
                                        @Query("key") String key);
+    }
+
+    public void toLabView(View v){
+        Intent intent = new Intent(this, LabView.class);
+        startActivity(intent);
     }
 
 }

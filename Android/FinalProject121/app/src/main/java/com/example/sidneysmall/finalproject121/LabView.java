@@ -47,11 +47,14 @@ public class LabView extends AppCompatActivity {
     private MyAdapter adp;
     private ArrayList<ListElement> aList;
 
-    RelativeLayout relLab = (RelativeLayout)findViewById(R.id.RelativeLab);
-    RelativeLayout relCur = (RelativeLayout)findViewById(R.id.RelativeCurrentComputer);
+    RelativeLayout relLab;
+    RelativeLayout relCur;
 
     protected void onResume(){
-        relCur.layout(0,relLab.getHeight(),0,0);
+        relLab = (RelativeLayout)findViewById(R.id.RelativeLab);
+        relCur = (RelativeLayout)findViewById(R.id.RelativeCurrentComputer);
+        relCur.setVisibility(View.INVISIBLE);
+        //relCur.layout(0, relLab.getHeight(), 0, 0);
         CompLocation.put("SNOW", "364");
         CompLocation.put("LIGHTNING", "364");
         CompLocation.put("SEPHIROTH", "368");
@@ -132,8 +135,9 @@ public class LabView extends AppCompatActivity {
     }
 
     public void ComputerInfo(View v){
-        relLab.layout(0,-200,0,200);
-        relCur.layout(0,300,0,0);
+        aList.clear();
+        //relCur.layout(0,0,0,0);
+        relCur.setVisibility(View.VISIBLE);
         currentComputer = (String)v.getTag();
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         // set your desired log level
@@ -159,10 +163,14 @@ public class LabView extends AppCompatActivity {
             public void onResponse(Response<ComputerResponse> cResponse) {
                 Log.i("result", cResponse.body().response);
                 if (cResponse.body().response.equals("ok")) {
+                    Log.i("mfer",Integer.toString(cResponse.body().messageInfo.size()));
                     for (int i = 0; i < cResponse.body().messageInfo.size(); i++) {
+                        Log.i("mfer",Integer.toString(cResponse.body().messageInfo.size()));
                         Log.i("message", cResponse.body().messageInfo.get(i).messageData);
                         String ts = cResponse.body().messageInfo.get(i).timeCreated;
+                        Log.i("ts",ts);
                         String pr = cResponse.body().messageInfo.get(i).problem;
+                        Log.i("pr",pr);
                         ListElement temp = new ListElement(ts, pr, i);
                         aList.add(temp);
                         adp.notifyDataSetChanged();
@@ -182,13 +190,13 @@ public class LabView extends AppCompatActivity {
         Intent intent = new Intent(this, Report.class);
         intent.putExtra(currentComputer, currentComputer);
         startActivity(intent);
-    }
+    }*/
 
     public void Reserve(View v){
-        Intent intent = new Intent(this, Reserve.class);
+        /*Intent intent = new Intent(this, Reserve.class);
         intent.putExtra(currentComputer,currentComputer);
-        startActivity(intent);
-    }*/
+        startActivity(intent);*/
+    }
 
     public void History(View v){
         Intent intent = new Intent(this, History.class);
@@ -198,8 +206,8 @@ public class LabView extends AppCompatActivity {
     }
 
     public void BackToView(View v){
-        relLab.layout(0,0,0,0);
-        relCur.layout(0,relLab.getHeight(),0,0);
+        //relLab.layout(0,0,0,0);
+        relCur.setVisibility(View.INVISIBLE);
     }
 
     public interface CompInfo {
