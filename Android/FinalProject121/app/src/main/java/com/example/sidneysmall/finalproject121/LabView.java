@@ -34,6 +34,7 @@ import retrofit2.http.Query;
 public class LabView extends AppCompatActivity {
 
 
+    String email;
     public static String ViewedComputer = "null";
     public static int ViewedSummaryNum = 0;
     private String currentComputer;
@@ -42,6 +43,8 @@ public class LabView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
+        Intent myIntent = getIntent();
+        email = myIntent.getStringExtra("email");
     }
 
     private MyAdapter adp;
@@ -186,11 +189,15 @@ public class LabView extends AppCompatActivity {
         });
     }
 
-    /*public void Report(View v){
-        Intent intent = new Intent(this, Report.class);
-        intent.putExtra(currentComputer, currentComputer);
+    public void Report(View v){
+        Intent intent = new Intent(this, ErrorReportActivity.class);
+        Log.i("Test: ", currentComputer);
+        Log.i("Test: ", CompLocation.get(currentComputer));
+        intent.putExtra("currentComputer", currentComputer);
+        intent.putExtra("email", email);
+        intent.putExtra("roomNumber", CompLocation.get(currentComputer));
         startActivity(intent);
-    }*/
+    }
 
     public void Reserve(View v){
         /*Intent intent = new Intent(this, Reserve.class);

@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Properties;
@@ -26,7 +28,10 @@ public class ErrorReportActivity extends AppCompatActivity {
 
     String LOG = "Print: ";
 
+    String[] stuff;
     String email;
+    String comp;
+    String room;
     Session session = null;
     String rec, subject, textMessage;
     String error;
@@ -42,6 +47,11 @@ public class ErrorReportActivity extends AppCompatActivity {
         String[] items = new String[]{"Select One", "Randomly Shuts Down", "Display Driver Failure", "Graphics Card Failure", "Randomly Enters Power Save Mode", "Other"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
         dropdown.setAdapter(adapter);
+        Intent intent = getIntent();
+        email = intent.getStringExtra("email");
+        comp = intent.getStringExtra("currentComputer");
+        room = intent.getStringExtra("roomNumber");
+
     }
 
     public void back(View v){
@@ -50,11 +60,12 @@ public class ErrorReportActivity extends AppCompatActivity {
     }
 
     public void send(View v){
-        if(error != null || (!error.isEmpty() && !error.equals("Select One"))){
+        if(error != null && !error.equals("Select One")){
+            TextView dets = (TextView)findViewById(R.id.editText);
+            String details = dets.getText().toString();
             rec = "aparvis@ucsc.edu";
-            subject = "";
-            textMessage = "";
-
+            subject = "GLCS: Error Report";
+            textMessage = "Computer: " + comp + "Room: " + room + "Error: " + error + "Details: " + details;
             Properties props = new Properties();
             props.put("mail.smtp.host", "smtp.gmail.com");
             props.put("mail.smtp.socketFactory.port", "465");
@@ -70,6 +81,8 @@ public class ErrorReportActivity extends AppCompatActivity {
 
             RetrieveFeedTask task = new RetrieveFeedTask();
             task.execute();
+        }else{
+            Toast.makeText(getApplicationContext(), "Please select an error type", Toast.LENGTH_LONG).show();
         }
 
     }
