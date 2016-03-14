@@ -96,6 +96,15 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         key = getString(R.string.KEY);
+        TextView passwordText = (TextView)findViewById(R.id.password);
+        TextView emailText = (TextView)findViewById(R.id.email);
+        if((passwordText != null || passwordText.getText().equals("")) && (emailText != null || emailText.getText().equals(""))){
+            Button login = (Button)findViewById(R.id.loginbutton);
+            login.setClickable(false);
+        }else{
+            Button login = (Button)findViewById(R.id.loginbutton);
+            login.setClickable(true);
+        }
 
     }
 
@@ -119,9 +128,9 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-        TextView passwordText = (TextView)findViewById(R.id.editText2);
+        TextView passwordText = (TextView)findViewById(R.id.password);
         password = passwordText.getText().toString();
-        TextView emailText = (TextView)findViewById(R.id.editText);
+        TextView emailText = (TextView)findViewById(R.id.email);
         email = emailText.getText().toString();
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);

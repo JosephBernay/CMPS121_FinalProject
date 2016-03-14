@@ -9,26 +9,33 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.sidneysmall.finalproject121.VerifyActivity">
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Confirm"
+        android:id="@+id/changepasswordbutton"
+        android:onClick="changepassword"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="97dp" />
+
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText3"
+        android:inputType="textPassword"
+        android:hint="Enter New Password"
+        android:ems="10"
+        android:id="@+id/newpassword"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:hint="Confirm New Password"
+        android:ems="10"
         android:id="@+id/editText4"
-        android:layout_below="@+id/editText3"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/button2"
-        android:onClick="changepassword"
-        android:layout_below="@+id/editText4"
+        android:layout_below="@+id/confirmpassword"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>
