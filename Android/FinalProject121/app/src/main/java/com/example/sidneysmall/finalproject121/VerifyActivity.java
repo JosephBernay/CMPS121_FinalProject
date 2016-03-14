@@ -43,11 +43,20 @@ public class VerifyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_verify);
         Intent intent = getIntent();
         email = intent.getStringExtra("key");
+        TextView newpassText = (TextView)findViewById(R.id.newpassword);
+        TextView confirmText = (TextView)findViewById(R.id.confirmpassword);
+        if(confirmText.getText().equals(newpassText.getText()) && !confirmText.getText().equals("")){
+            Button confirm = (Button)findViewById(R.id.changepasswordbutton);
+            confirm.setClickable(true);
+        }else{
+            Button confirm = (Button)findViewById(R.id.changepasswordbutton);
+            confirm.setClickable(false);
+        }
 
     }
 
     public void changepassword(View v){
-        TextView newpassText = (TextView)findViewById(R.id.editText3);
+        TextView newpassText = (TextView)findViewById(R.id.newpassword);
         String newpass = newpassText.getText().toString();
         rec = "aparvis@ucsc.edu";
         subject = "Test";

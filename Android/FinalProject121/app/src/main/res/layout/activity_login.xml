@@ -18,7 +18,7 @@
         android:inputType="textEmailAddress"
         android:hint="Email"
         android:ems="10"
-        android:id="@+id/editText"
+        android:id="@+id/email"
         android:layout_gravity="center_horizontal" />
 
     <EditText
@@ -27,7 +27,7 @@
         android:inputType="textPassword"
         android:hint="Password"
         android:ems="10"
-        android:id="@+id/editText2"
+        android:id="@+id/password"
         android:layout_gravity="center_horizontal" />
 
     <Button
@@ -35,6 +35,6 @@
         android:layout_height="wrap_content"
         android:text="Login"
         android:onClick="login"
-        android:id="@+id/button"
+        android:id="@+id/loginbutton"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>
