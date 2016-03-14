@@ -1,11 +1,18 @@
 package com.example.sidneysmall.finalproject121;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.Toast;
+
 import java.util.Properties;
 
-import javax.mail.Address;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -15,47 +22,38 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-
-
-public class VerifyActivity extends AppCompatActivity {
+public class ErrorReportActivity extends AppCompatActivity {
 
     String LOG = "Print: ";
 
     String email;
     Session session = null;
     String rec, subject, textMessage;
+    String error;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_verify);
-        Intent intent = getIntent();
-        email = intent.getStringExtra("key");
-
+        setContentView(R.layout.activity_error_report);
+        Spinner dropdown = (Spinner)findViewById(R.id.spinner);
+        SpinnerActivity spinnerActivity = new SpinnerActivity();
+        dropdown.setOnItemSelectedListener(spinnerActivity);
+        String[] items = new String[]{"Select One", "Randomly Shuts Down", "Display Driver Failure", "Graphics Card Failure", "Randomly Enters Power Save Mode", "Other"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        dropdown.setAdapter(adapter);
     }
 
-    public void changepassword(View v){
-        TextView newpassText = (TextView)findViewById(R.id.newpassword);
-        TextView confirmText = (TextView)findViewById(R.id.confirmpassword);
-        if((confirmText == null || confirmText.getText().toString().equals("")) && (newpassText == null || newpassText.getText().toString().equals(""))){
-            Toast.makeText(getApplicationContext(), "Please Fill In Both Fields", Toast.LENGTH_LONG).show();
-        }else if(newpassText.getText().toString().equals(confirmText.getText().toString())){
-            String newpass = newpassText.getText().toString();
+    public void back(View v){
+        Intent myIntent = new Intent(ErrorReportActivity.this, LabView.class);
+        startActivity(myIntent);
+    }
+
+    public void send(View v){
+        if(error != null || (!error.isEmpty() && !error.equals("Select One"))){
             rec = "aparvis@ucsc.edu";
-            subject = "Password Change Verification";
-            textMessage = "Someone has attempted to log on with this email and change the password. If the was you then click the link below otherwise contact your instructor.\n\nhttp://lauren.pythonanywhere.com/welcome/default/add_user?email=" + email + "&password=" + newpass + "&key="+ getString(R.string.KEY);
+            subject = "";
+            textMessage = "";
 
             Properties props = new Properties();
             props.put("mail.smtp.host", "smtp.gmail.com");
@@ -72,12 +70,9 @@ public class VerifyActivity extends AppCompatActivity {
 
             RetrieveFeedTask task = new RetrieveFeedTask();
             task.execute();
-        }else{
-            Toast.makeText(getApplicationContext(), "The two passwords do not match", Toast.LENGTH_LONG).show();
         }
 
     }
-
     class RetrieveFeedTask extends AsyncTask<String, Void, String> {
 
         @Override
@@ -101,6 +96,21 @@ public class VerifyActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             Toast.makeText(getApplicationContext(), "Message sent", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public class SpinnerActivity extends Activity implements AdapterView.OnItemSelectedListener {
+
+        public void onItemSelected(AdapterView<?> parent, View view,
+                                   int pos, long id) {
+            error = parent.getItemAtPosition(pos).toString();
+            //Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
+            // An item was selected. You can retrieve the selected item using
+            // parent.getItemAtPosition(pos)
+        }
+
+        public void onNothingSelected(AdapterView<?> parent) {
+            // Another interface callback
         }
     }
 }

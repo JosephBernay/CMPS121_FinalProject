@@ -188,6 +188,7 @@ public class LoginActivity extends AppCompatActivity {
                         }
                         else {
                             Intent myIntent = new Intent(LoginActivity.this, LabView.class);
+                            myIntent.putExtra("email", email);
                             startActivity(myIntent);
                         }
                     }else{
