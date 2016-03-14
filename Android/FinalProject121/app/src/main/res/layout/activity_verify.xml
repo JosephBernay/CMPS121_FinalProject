@@ -33,9 +33,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
-        android:hint="Confirm New Password"
+        android:hint="Confirm Password"
         android:ems="10"
-        android:id="@+id/editText4"
-        android:layout_below="@+id/confirmpassword"
+        android:id="@+id/confirmpassword"
+        android:layout_below="@+id/newpassword"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>
