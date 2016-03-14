@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.sidneysmall.finalproject121.response.ComputerResponse;
 import com.example.sidneysmall.finalproject121.response.MessageInfo;
@@ -137,7 +138,6 @@ public class LabView extends AppCompatActivity {
     public void ComputerInfo(View v){
         aList.clear();
         //relCur.layout(0,0,0,0);
-        relCur.setVisibility(View.VISIBLE);
         currentComputer = (String)v.getTag();
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         // set your desired log level
@@ -163,14 +163,11 @@ public class LabView extends AppCompatActivity {
             public void onResponse(Response<ComputerResponse> cResponse) {
                 Log.i("result", cResponse.body().response);
                 if (cResponse.body().response.equals("ok")) {
-                    Log.i("mfer",Integer.toString(cResponse.body().messageInfo.size()));
+                    ((TextView) findViewById(R.id.ClickedCompName)).setText(currentComputer);
+                    relCur.setVisibility(View.VISIBLE);
                     for (int i = 0; i < cResponse.body().messageInfo.size(); i++) {
-                        Log.i("mfer",Integer.toString(cResponse.body().messageInfo.size()));
-                        Log.i("message", cResponse.body().messageInfo.get(i).messageData);
                         String ts = cResponse.body().messageInfo.get(i).timeCreated;
-                        Log.i("ts",ts);
                         String pr = cResponse.body().messageInfo.get(i).problem;
-                        Log.i("pr",pr);
                         ListElement temp = new ListElement(ts, pr, i);
                         aList.add(temp);
                         adp.notifyDataSetChanged();

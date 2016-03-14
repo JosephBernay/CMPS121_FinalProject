@@ -7,7 +7,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".LabView">
+    tools:context=".LabView"
+    android:background="@color/colorPrimary">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -15,7 +16,8 @@
         android:id="@+id/RelativeLab"
         android:visibility="visible"
         android:layout_marginTop="0dp"
-        android:layout_marginBottom="0dp">
+        android:layout_marginBottom="0dp"
+        android:background="@color/colorPrimary">
 
         <ImageView
             android:layout_width="match_parent"
@@ -224,20 +226,34 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp">
+        android:layout_marginRight="0dp"
+        android:background="@color/colorPrimaryDark">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/reportButton">
+            android:layout_below="@+id/reportButton"
+            android:background="@color/colorPrimary">
 
             <ListView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/listView"
-                android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/ClickedCompName"
+                android:background="@color/colorPrimary"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="ComputerName"
+                android:id="@+id/ClickedCompName"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:background="@color/emptySchedule"
+                android:textColor="@color/black"/>
 
         </RelativeLayout>
 
@@ -249,7 +265,9 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:onClick="Report"/>
+            android:onClick="Report"
+            android:background="@color/wallet_holo_blue_light"
+            android:textColor="@color/black"/>
 
         <Button
             android:layout_width="wrap_content"
@@ -259,7 +277,9 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:onClick="BackToView"/>
+            android:onClick="BackToView"
+            android:background="@color/wallet_holo_blue_light"
+            android:textColor="@color/black"/>
 
         <Button
             android:layout_width="wrap_content"
@@ -268,7 +288,9 @@
             android:id="@+id/scheduleButton"
             android:onClick="Reserve"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:background="@color/wallet_holo_blue_light"
+            android:textColor="@color/black"/>
 
     </RelativeLayout>
 
