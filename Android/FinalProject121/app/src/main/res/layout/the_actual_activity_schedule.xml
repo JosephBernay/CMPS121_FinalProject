@@ -82,8 +82,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/timeList"
         android:layout_below="@+id/dayList"
-        android:layout_above="@+id/scheduleBack"
-        android:stackFromTop="true">
+        android:layout_above="@+id/scheduleBack">
     </ListView>
     <Button
         android:layout_width="match_parent"

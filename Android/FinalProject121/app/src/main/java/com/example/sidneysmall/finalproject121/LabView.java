@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.util.Log;
 import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.example.sidneysmall.finalproject121.response.ComputerResponse;
 import com.example.sidneysmall.finalproject121.response.MessageInfo;
@@ -31,12 +33,25 @@ import retrofit2.http.Query;
 
 public class LabView extends AppCompatActivity {
 
+
+    public static String ViewedComputer = "null";
+    public static int ViewedSummaryNum = 0;
     private String currentComputer;
     private Dictionary<String, String> CompLocation = new Hashtable<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
+    }
+
+    private MyAdapter adp;
+    private ArrayList<ListElement> aList;
+
+    RelativeLayout relLab = (RelativeLayout)findViewById(R.id.RelativeLab);
+    RelativeLayout relCur = (RelativeLayout)findViewById(R.id.RelativeCurrentComputer);
+
+    protected void onResume(){
+        relCur.layout(0,relLab.getHeight(),0,0);
         CompLocation.put("SNOW", "364");
         CompLocation.put("LIGHTNING", "364");
         CompLocation.put("SEPHIROTH", "368");
@@ -53,6 +68,13 @@ public class LabView extends AppCompatActivity {
         CompLocation.put("CALLOFDUTY", "366");
         CompLocation.put("LEFT4DEAD", "366");
         GetAllStatus();
+        aList = new ArrayList<ListElement>();
+        adp = new MyAdapter(this, R.layout.list_element, aList);
+        ListView problemList = (ListView) findViewById(R.id.listView);
+        problemList.setAdapter(adp);
+        adp.notifyDataSetChanged();
+
+        super.onResume();
     }
 
     public void GetAllStatus(){
@@ -76,7 +98,7 @@ public class LabView extends AppCompatActivity {
             CompStatus service = retrofit.create(CompStatus.class);
 
             Call<StatusResponse> queryResponseCall =
-                    service.getStatus(currentComputer);
+                    service.getStatus(currentComputer, getString(R.string.KEY));
 
             //Call retrofit asynchronously
             queryResponseCall.enqueue(new Callback<StatusResponse>() {
@@ -110,7 +132,8 @@ public class LabView extends AppCompatActivity {
     }
 
     public void ComputerInfo(View v){
-
+        relLab.layout(0,-200,0,200);
+        relCur.layout(0,300,0,0);
         currentComputer = (String)v.getTag();
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         // set your desired log level
@@ -128,7 +151,7 @@ public class LabView extends AppCompatActivity {
         CompInfo service = retrofit.create(CompInfo.class);
 
         Call<ComputerResponse> queryResponseCall =
-                service.getInfo(currentComputer);
+                service.getInfo(currentComputer,getString(R.string.KEY));
 
         //Call retrofit asynchronously
         queryResponseCall.enqueue(new Callback<ComputerResponse>() {
@@ -138,6 +161,11 @@ public class LabView extends AppCompatActivity {
                 if (cResponse.body().response.equals("ok")) {
                     for (int i = 0; i < cResponse.body().messageInfo.size(); i++) {
                         Log.i("message", cResponse.body().messageInfo.get(i).messageData);
+                        String ts = cResponse.body().messageInfo.get(i).timeCreated;
+                        String pr = cResponse.body().messageInfo.get(i).problem;
+                        ListElement temp = new ListElement(ts, pr, i);
+                        aList.add(temp);
+                        adp.notifyDataSetChanged();
                     }
                 }
             }
@@ -160,22 +188,30 @@ public class LabView extends AppCompatActivity {
         Intent intent = new Intent(this, Reserve.class);
         intent.putExtra(currentComputer,currentComputer);
         startActivity(intent);
-    }
+    }*/
 
     public void History(View v){
         Intent intent = new Intent(this, History.class);
-        intent.putExtra(currentComputer,currentComputer);
+        intent.putExtra(ViewedComputer, currentComputer);
+        ViewedSummaryNum = (int)v.getTag();
         startActivity(intent);
-    }*/
+    }
+
+    public void BackToView(View v){
+        relLab.layout(0,0,0,0);
+        relCur.layout(0,relLab.getHeight(),0,0);
+    }
 
     public interface CompInfo {
         @GET("get_messages")
-        Call<ComputerResponse> getInfo(@Query("computerName") String currentComputer);
+        Call<ComputerResponse> getInfo(@Query("computerName") String currentComputer,
+                                       @Query("key") String key);
     }
 
     public interface CompStatus {
         @GET("get_status")
-        Call<StatusResponse> getStatus(@Query("computerName") String currentComputer);
+        Call<StatusResponse> getStatus(@Query("computerName") String currentComputer,
+                                       @Query("key") String key);
 
     }
 }

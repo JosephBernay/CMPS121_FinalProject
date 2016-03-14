@@ -9,16 +9,50 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".LabView">
 
-    <ImageView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/imageView"
-        android:src="@drawable/computerlab" />
+        android:id="@+id/RelativeLab"
+        android:visibility="visible"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp">
 
-    <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:columnCount="8">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/imageView"
+            android:src="@drawable/computerlab" />
+
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/PSF"
+            android:tag="PSF"
+            android:visibility="invisible"
+            android:clickable="false" />
+
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/SNOW"
+            android:tag="SNOW"
+            android:onClick="ComputerInfo"
+            android:layout_below="@+id/LIGHTNING"
+            android:layout_toRightOf="@+id/LEFT4DEAD"
+            android:layout_toEndOf="@+id/LEFT4DEAD"
+            android:clickable="true" />
+
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/LIGHTNING"
+            android:tag="LIGHTNING"
+            android:onClick="ComputerInfo"
+            android:layout_marginBottom="11dp"
+            android:layout_alignBottom="@+id/SEAMUS"
+            android:layout_alignLeft="@+id/CALLOFDUTY"
+            android:layout_alignStart="@+id/CALLOFDUTY"
+            android:clickable="true" />
 
         <ImageButton
             android:layout_width="30dp"
@@ -27,105 +61,214 @@
             android:tag="SEPHIROTH"
             android:onClick="ComputerInfo"
             android:layout_column="0"
-            android:layout_row="0" />
+            android:layout_row="0"
+            android:layout_marginRight="3dp"
+            android:layout_marginEnd="3dp"
+            android:layout_alignTop="@+id/ZELDA"
+            android:layout_toLeftOf="@+id/ZELDA"
+            android:layout_toStartOf="@+id/ZELDA"
+            android:clickable="true" />
 
         <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:id="@+id/ZELDA"
             android:tag="ZELDA"
-            android:onClick="ComputerInfo" />
+            android:onClick="ComputerInfo"
+            android:layout_alignTop="@+id/VICVIPER"
+            android:layout_toLeftOf="@+id/CMDRKEEN"
+            android:layout_toStartOf="@+id/CMDRKEEN"
+            android:layout_marginRight="35dp"
+            android:layout_marginEnd="35dp"
+            android:clickable="true" />
 
         <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:id="@+id/SEAMUS"
             android:tag="SEAMUS"
-            android:onClick="ComputerInfo" />
+            android:onClick="ComputerInfo"
+            android:layout_below="@+id/LINK"
+            android:layout_alignLeft="@+id/LINK"
+            android:layout_alignStart="@+id/LINK"
+            android:clickable="true" />
 
         <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:id="@+id/LINK"
             android:tag="LINK"
-            android:onClick="ComputerInfo" />
+            android:onClick="ComputerInfo"
+            android:layout_below="@+id/CMDRKEEN"
+            android:layout_alignLeft="@+id/CMDRKEEN"
+            android:layout_alignStart="@+id/CMDRKEEN"
+            android:clickable="true" />
 
         <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:id="@+id/CMDRKEEN"
             android:tag="CMDRKEEN"
-            android:onClick="ComputerInfo" />
+            android:onClick="ComputerInfo"
+            android:layout_below="@+id/VICVIPER"
+            android:layout_alignLeft="@+id/VICVIPER"
+            android:layout_alignStart="@+id/VICVIPER"
+            android:clickable="true" />
 
         <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:id="@+id/VICVIPER"
             android:tag="VICVIPER"
-            android:onClick="ComputerInfo" />
+            android:onClick="ComputerInfo"
+            android:layout_centerVertical="true"
+            android:layout_alignLeft="@+id/MARIO"
+            android:layout_alignStart="@+id/MARIO"
+            android:clickable="true" />
 
         <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:id="@+id/MARIO"
             android:tag="MARIO"
-            android:onClick="ComputerInfo" />
+            android:onClick="ComputerInfo"
+            android:layout_below="@+id/BRAID"
+            android:layout_alignLeft="@+id/BRAID"
+            android:layout_alignStart="@+id/BRAID"
+            android:clickable="true" />
 
         <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:id="@+id/BRAID"
             android:tag="BRAID"
-            android:onClick="ComputerInfo" />
+            android:onClick="ComputerInfo"
+            android:layout_alignTop="@+id/HALFLIFE"
+            android:layout_alignLeft="@+id/DONKEYKONG"
+            android:layout_alignStart="@+id/DONKEYKONG"
+            android:clickable="true" />
 
         <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:id="@+id/DONKEYKONG"
             android:tag="DONKEYKONG"
-            android:onClick="ComputerInfo" />
+            android:onClick="ComputerInfo"
+            android:layout_marginRight="41dp"
+            android:layout_marginEnd="41dp"
+            android:layout_above="@+id/BRAID"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:clickable="true" />
 
         <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:id="@+id/MASSEFFECT"
             android:tag="MASSEFFECT"
-            android:onClick="ComputerInfo" />
+            android:onClick="ComputerInfo"
+            android:layout_above="@+id/HALFLIFE"
+            android:layout_alignLeft="@+id/HALFLIFE"
+            android:layout_alignStart="@+id/HALFLIFE"
+            android:clickable="true" />
 
         <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:id="@+id/HALFLIFE"
             android:tag="HALFLIFE"
-            android:onClick="ComputerInfo" />
+            android:onClick="ComputerInfo"
+            android:layout_above="@+id/CALLOFDUTY"
+            android:layout_alignLeft="@+id/CALLOFDUTY"
+            android:layout_alignStart="@+id/CALLOFDUTY"
+            android:layout_marginBottom="9dp"
+            android:clickable="true" />
 
         <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:id="@+id/CALLOFDUTY"
             android:tag="CALLOFDUTY"
-            android:onClick="ComputerInfo" />
+            android:onClick="ComputerInfo"
+            android:layout_marginLeft="53dp"
+            android:layout_marginStart="53dp"
+            android:layout_alignTop="@+id/LEFT4DEAD"
+            android:layout_toRightOf="@+id/LEFT4DEAD"
+            android:layout_toEndOf="@+id/LEFT4DEAD"
+            android:clickable="true" />
 
         <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:id="@+id/LEFT4DEAD"
             android:tag="LEFT4DEAD"
-            android:onClick="ComputerInfo" />
+            android:onClick="ComputerInfo"
+            android:layout_below="@+id/PSF"
+            android:layout_toRightOf="@+id/PSF"
+            android:layout_toEndOf="@+id/PSF"
+            android:layout_marginLeft="29dp"
+            android:layout_marginStart="29dp"
+            android:layout_marginTop="172dp"
+            android:clickable="true" />
 
-        <ImageButton
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:id="@+id/SNOW"
-            android:tag="SNOW"
-            android:onClick="ComputerInfo" />
+    </RelativeLayout>
 
-        <ImageButton
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:id="@+id/LIGHTNING"
-            android:tag="LIGHTNING"
-            android:onClick="ComputerInfo" />
-    </GridLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:id="@+id/RelativeCurrentComputer"
+        android:layout_marginTop="500dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/reportButton">
+
+            <ListView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/listView"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+        </RelativeLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Report"
+            android:id="@+id/reportButton"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:onClick="Report"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:id="@+id/button"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:onClick="BackToView"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reserve"
+            android:id="@+id/scheduleButton"
+            android:onClick="Reserve"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
 
 </RelativeLayout>
