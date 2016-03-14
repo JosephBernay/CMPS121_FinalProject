@@ -43,40 +43,39 @@ public class VerifyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_verify);
         Intent intent = getIntent();
         email = intent.getStringExtra("key");
-        TextView newpassText = (TextView)findViewById(R.id.newpassword);
-        TextView confirmText = (TextView)findViewById(R.id.confirmpassword);
-        if(confirmText.getText().equals(newpassText.getText()) && !confirmText.getText().equals("")){
-            Button confirm = (Button)findViewById(R.id.changepasswordbutton);
-            confirm.setClickable(true);
-        }else{
-            Button confirm = (Button)findViewById(R.id.changepasswordbutton);
-            confirm.setClickable(false);
-        }
 
     }
 
     public void changepassword(View v){
         TextView newpassText = (TextView)findViewById(R.id.newpassword);
-        String newpass = newpassText.getText().toString();
-        rec = "aparvis@ucsc.edu";
-        subject = "Test";
-        textMessage = "http://lauren.pythonanywhere.com/welcome/default/add_user?email=" + email + "&password=" + newpass + "&key="+ getString(R.string.KEY);
+        TextView confirmText = (TextView)findViewById(R.id.confirmpassword);
+        if((confirmText == null || confirmText.getText().toString().equals("")) && (newpassText == null || newpassText.getText().toString().equals(""))){
+            Toast.makeText(getApplicationContext(), "Please Fill In Both Fields", Toast.LENGTH_LONG).show();
+        }else if(newpassText.getText().toString().equals(confirmText.getText().toString())){
+            String newpass = newpassText.getText().toString();
+            rec = email;
+            subject = "Test";
+            textMessage = "http://lauren.pythonanywhere.com/welcome/default/add_user?email=" + email + "&password=" + newpass + "&key="+ getString(R.string.KEY);
 
-        Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.socketFactory.port", "465");
-        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", "465");
+            Properties props = new Properties();
+            props.put("mail.smtp.host", "smtp.gmail.com");
+            props.put("mail.smtp.socketFactory.port", "465");
+            props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.port", "465");
 
-        session = Session.getDefaultInstance(props, new Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("glcs.ucsc@gmail.com", "Okay. What now, Lauren?");
-            }
-        });
+            session = Session.getDefaultInstance(props, new Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication("glcs.ucsc@gmail.com", "Okay. What now, Lauren?");
+                }
+            });
 
-        RetrieveFeedTask task = new RetrieveFeedTask();
-        task.execute();
+            RetrieveFeedTask task = new RetrieveFeedTask();
+            task.execute();
+        }else{
+            Toast.makeText(getApplicationContext(), "The two passwords do not match", Toast.LENGTH_LONG).show();
+        }
+
     }
 
     class RetrieveFeedTask extends AsyncTask<String, Void, String> {
