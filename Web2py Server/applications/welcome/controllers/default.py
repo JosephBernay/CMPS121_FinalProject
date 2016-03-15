@@ -171,7 +171,9 @@ def get_schedule():
 def schedule_computer():
    try:
       if request.vars.computerName == None or request.vars.beginTime == None or request.vars.endTime == None or request.vars.dateReserved == None or request.vars.email == None or request.vars.key == None or request.vars.key != KEY:
-         return response.json({'response': 'ok'})
+         return response.json({'response': 'error'})
+      if len(db(db.schedule.beginTime == request.vars.beginTime and db.schedule.endTime == request.vars.endTime and db.schedule.computerName == request.vars.computerName and db.schedule.dateReserved == request.vars.dateReserved).select()) != 0:
+         return response.json({'response': 'already reserved'})
       db.schedule.insert(computerName = request.vars.computerName,
                beginTime = request.vars.beginTime,
                endTime = request.vars.endTime,
@@ -180,6 +182,15 @@ def schedule_computer():
       return response.json({'response':'ok'})
    except:
       return response.json({'response':'error'})
+      
+def cancel_reservation():
+   try:
+      if request.vars.computerName == None or request.vars.beginTime == None or request.vars.endTime == None or request.vars.dateReserved == None or request.vars.email == None or request.vars.key == None or request.vars.key != KEY:
+            return response.json({'response': 'error'})
+      db(db.schedule.computerName == request.vars.computerName and db.schedule.beginTime == request.vars.beginTime and db.schedule.endTime == request.vars.endTime and db.schedule.dateReserved == request.vars.dateReserved and db.schedule.email == request.vars.email).delete()
+      return response.json({'response': 'ok'})
+   except:
+      return response.json({'response': 'error'})
       
 def delete_user():
    db(db.userData.email == request.args(0)).delete()
