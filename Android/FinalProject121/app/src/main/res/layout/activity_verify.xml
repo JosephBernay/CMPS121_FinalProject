@@ -14,8 +14,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Confirm"
+        android:textColor="@color/buttonText"
         android:id="@+id/changepasswordbutton"
         android:onClick="changepassword"
+        android:background="@color/button"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="97dp" />

@@ -99,10 +99,27 @@ public class ErrorReportActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Response<AddUserResponse> response) {
                     if (response.body().getResponse().equals("ok")) {
-                        Toast.makeText(getApplicationContext(), "Error Posted To Server Sending To BELS...", Toast.LENGTH_LONG).show();
-                        rec = "aparvis@ucsc.edu";
+                        Toast.makeText(getApplicationContext(), "Error Posted To Server. Sending To BELS...", Toast.LENGTH_LONG).show();
+                        rec = "jbernay@ucsc.edu";
                         subject = "GLCS: Error Report";
-                        textMessage = "Computer: " + comp + "Room: " + room + "Error: " + error + "Details: " + details;
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("<b>Room:</b> " + room);
+                        sb.append("<br/>");
+                        sb.append("<br/>");
+                        sb.append("<b>Computer:</b> " + comp);
+                        sb.append("<br/>");
+                        sb.append("<br/>");
+                        sb.append("<b>Error:</b> " + error);
+                        sb.append("<br/>");
+                        sb.append("<br/>");
+                        sb.append("<b>Details:</b> " + details);
+                        sb.append("<br/>");
+                        sb.append("<br/>");
+                        sb.append("<b>Follow-up address:</b> " + email);
+                        sb.append("When the computer has been fixed, please hit the following link: <br/>");
+                        sb.append("http://glcs-1251.appspot.com/welcome/default/post_message/?computerName=" + comp + "&computerNumber=" + room + "&messageData=Serviced%20by%20BELS&problem=fixed&key=" + getString(R.string.KEY));
+                        textMessage = sb.toString();
+                        //textMessage = "Computer: " + comp + "Room: " + room + "Error: " + error + "Details: " + details;
                         Properties props = new Properties();
                         props.put("mail.smtp.host", "smtp.gmail.com");
                         props.put("mail.smtp.socketFactory.port", "465");

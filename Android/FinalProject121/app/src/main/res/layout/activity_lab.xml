@@ -221,19 +221,13 @@
         android:layout_height="wrap_content"
         android:visibility="visible"
         android:id="@+id/RelativeCurrentComputer"
-        android:layout_marginTop="300dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:background="@color/colorPrimaryDark">
-
+        android:layout_alignParentBottom="true"
+        android:background="@color/textBox">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/reportButton"
-            android:background="@color/colorPrimary">
+            android:background="@color/textBox">
 
             <ListView
                 android:layout_width="wrap_content"
@@ -242,19 +236,20 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/ClickedCompName"
-                android:background="@color/colorPrimary"
+                android:background="@color/textBox"
                 android:stackFromBottom="false" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold"
+                android:textColor="@color/mainTitle"
                 android:text="ComputerName"
                 android:id="@+id/ClickedCompName"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:background="@color/textBox"
-                android:textColor="@color/black"/>
+                android:background="@color/textBox"/>
 
         </RelativeLayout>
 
@@ -267,8 +262,8 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:onClick="Report"
-            android:background="@color/wallet_holo_blue_light"
-            android:textColor="@color/black"/>
+            android:background="@color/button"
+            android:textColor="@color/buttonText"/>
 
         <Button
             android:layout_width="wrap_content"
@@ -279,8 +274,8 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:onClick="BackToView"
-            android:background="@color/wallet_holo_blue_light"
-            android:textColor="@color/black"/>
+            android:background="@color/button"
+            android:textColor="@color/buttonText"/>
 
         <Button
             android:layout_width="wrap_content"
@@ -290,8 +285,8 @@
             android:onClick="Reserve"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:background="@color/wallet_holo_blue_light"
-            android:textColor="@color/black"/>
+            android:background="@color/button"
+            android:textColor="@color/buttonText"/>
 
     </RelativeLayout>
 
