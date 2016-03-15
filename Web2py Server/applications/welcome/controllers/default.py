@@ -42,14 +42,15 @@ def get_messages():
          theDict.update({'response':'error'})
          return response.json(theDict)  
       comp = request.vars.computerName
-      rows = db(db.messageData.computerName == comp).select()
+      rows = db().select(db.messageData.ALL, orderby=db.messageData.timeCreated)
       d = []
       for r in rows:
-         d.append({'computerName': r.computerName,
-                           'computerNumber':r.computerNumber,
-                           'messageData':r.messageData,
-                           'problem': r.problem,
-                           'timeCreated': r.timeCreated})
+         if r.computerName == request.vars.computerName:
+            d.append({'computerName': r.computerName,
+                              'computerNumber':r.computerNumber,
+                              'messageData':r.messageData,
+                              'problem': r.problem,
+                              'timeCreated': r.timeCreated})
       theDict = dict(messageInfo=d)
       theDict.update({'response':'ok'})
       return response.json(theDict)
