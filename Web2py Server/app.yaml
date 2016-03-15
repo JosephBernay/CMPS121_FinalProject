@@ -3,7 +3,7 @@
 #  See http://code.google.com/appengine/docs/python/config/appconfig.html
 #  and http://web2py.com/book/default/chapter/11?search=app.yaml
 
-application: mobileapplicationserver
+application: glcs-1251
 version: 1
 api_version: 1
 
@@ -13,12 +13,12 @@ api_version: 1
 runtime: python27
 threadsafe: true    # true for WSGI & concurrent requests (Python 2.7 only)
 
-default_expiration: "10m"   # for static files
+default_expiration: "24h"   # for static files
 
 handlers:
 
-# Warning! Static mapping - below - isn't compatible with
-# the parametric router's language logic.
+# Warning! Static mapping - below - isn't compatible with 
+# the parametric router's language logic. 
 # You cannot use them together.
 
 - url: /(.+?)/static/_(\d+\.\d+\.\d+)\/(.+)
@@ -61,9 +61,6 @@ skip_files: |
  (.*/RCS/.*)|
  (\..*)|
  (applications/examples/.*)|
- (applications/(admin)/.*)|
- (applications/(examples)/.*)|
- (applications/(welcome)/.*)|
  ((examples|welcome)\.(w2p|tar))|
  (applications/.*?/(cron|databases|errors|cache|sessions)/.*)|
  ((logs|scripts)/.*)|
