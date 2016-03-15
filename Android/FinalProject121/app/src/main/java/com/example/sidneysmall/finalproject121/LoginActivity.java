@@ -133,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
                     .build();
 
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://lauren.pythonanywhere.com/welcome/default/")
+                    .baseUrl("http://glcs-1251.appspot.com/welcome/default/")
                     .addConverterFactory(GsonConverterFactory.create())    //parse Gson string
                     .client(httpClient)    //add logging
                     .build();
@@ -146,6 +146,7 @@ public class LoginActivity extends AppCompatActivity {
             queryResponseCall.enqueue(new Callback<GetUserResponse>() {
                 @Override
                 public void onResponse(Response<GetUserResponse> response) {
+                    Log.d("DEBUG", "password: " + password);
                     if (response.body().getResponse().equals("ok") && response.body().getUserInfo().getLogin().equals("success")) {
                         if (password.equals("temp")) {
                             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
@@ -155,7 +156,7 @@ public class LoginActivity extends AppCompatActivity {
                                     .build();
 
                             Retrofit retrofit = new Retrofit.Builder()
-                                    .baseUrl("http://lauren.pythonanywhere.com/welcome/default/")
+                                    .baseUrl("http://glcs-1251.appspot.com/welcome/default/")
                                     .addConverterFactory(GsonConverterFactory.create())    //parse Gson string
                                     .client(httpClient)    //add logging
                                     .build();

@@ -82,7 +82,7 @@ public class ErrorReportActivity extends AppCompatActivity {
                     .build();
 
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://lauren.pythonanywhere.com/welcome/default/")
+                    .baseUrl("http://glcs-1251.appspot.com/welcome/default/")
                     .addConverterFactory(GsonConverterFactory.create())    //parse Gson string
                     .client(httpClient)    //add logging
                     .build();

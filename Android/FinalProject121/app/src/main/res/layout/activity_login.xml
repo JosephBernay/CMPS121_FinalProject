@@ -8,9 +8,16 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.sidneysmall.finalproject121.LoginActivity">
+    tools:context="com.example.sidneysmall.finalproject121.LoginActivity"
+    android:background="@color/background">
 
     <!-- Login progress -->
+
+    <ImageView
+        android:layout_height="200dp"
+        android:layout_width="200dp"
+        android:src="@drawable/baskin_logo_banner">
+    </ImageView>
 
     <EditText
         android:layout_width="match_parent"

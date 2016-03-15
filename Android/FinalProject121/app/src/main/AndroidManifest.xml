@@ -22,11 +22,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".VerifyActivity"></activity>
-        <activity android:name=".LabView"></activity>
-        <activity android:name=".ErrorReportActivity"></activity>
-        <activity android:name=".History"></activity>
-        <activity android:name=".ScheduleView"></activity>
+        <activity android:name=".VerifyActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"></activity>
+        <activity android:name=".LabView"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"></activity>
+        <activity android:name=".ErrorReportActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"></activity>
+        <activity android:name=".History"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"></activity>
+        <activity android:name=".ScheduleView"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"></activity>
     </application>
 
 </manifest>

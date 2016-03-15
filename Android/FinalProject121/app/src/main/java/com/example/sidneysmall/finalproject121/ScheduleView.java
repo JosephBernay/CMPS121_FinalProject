@@ -1,33 +1,17 @@
 package com.example.sidneysmall.finalproject121;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.location.Location;
-import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.PopupMenu;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -35,14 +19,7 @@ import com.example.sidneysmall.finalproject121.response.ScheduleCancel;
 import com.example.sidneysmall.finalproject121.response.ScheduleInfo;
 import com.example.sidneysmall.finalproject121.response.SchedulePost;
 import com.example.sidneysmall.finalproject121.response.ScheduleResponse;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 
-import org.w3c.dom.Text;
-
-import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -117,7 +94,7 @@ public class ScheduleView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.the_actual_activity_schedule);
+        setContentView(R.layout.activity_schedule);
 
         settings = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -184,8 +161,9 @@ public class ScheduleView extends AppCompatActivity {
             oldDayButton.setBackgroundResource(R.drawable.day_button_2);
         }
         curDay = ((Button)v).getText().toString();
-        String numDayString = Integer.toString(((Button) v).getId());
-        numDay = Integer.parseInt(numDayString.substring(numDayString.length() - 1, numDayString.length()));
+        String numDayString = ((Button) v).getTag().toString();
+        Log.d("DEBUG", "numDayString: " + numDayString);
+        numDay = Integer.parseInt(numDayString.substring(numDayString.length() - 1, numDayString.length())) - 1;
         Log.d("DEBUG", Integer.toString(numDay));
         Button newDayButton = (Button)dayList.getChildAt(numDay);
         newDayButton.setBackgroundResource(R.drawable.day_button_current);
@@ -287,7 +265,7 @@ public class ScheduleView extends AppCompatActivity {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://lauren.pythonanywhere.com/welcome/default/")
+                .baseUrl("http://glcs-1251.appspot.com/welcome/default/")
                 .addConverterFactory(GsonConverterFactory.create())    //parse Gson string
                 .client(httpClient)    //add logging
                 .build();
@@ -328,7 +306,7 @@ public class ScheduleView extends AppCompatActivity {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://lauren.pythonanywhere.com/welcome/default/")
+                .baseUrl("http://glcs-1251.appspot.com/welcome/default/")
                 .addConverterFactory(GsonConverterFactory.create())    //parse Gson string
                 .client(httpClient)    //add logging
                 .build();
@@ -366,7 +344,7 @@ public class ScheduleView extends AppCompatActivity {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://lauren.pythonanywhere.com/welcome/default/")
+                .baseUrl("http://glcs-1251.appspot.com/welcome/default/")
                 .addConverterFactory(GsonConverterFactory.create())    //parse Gson string
                 .client(httpClient)    //add logging
                 .build();
@@ -474,7 +452,7 @@ public class ScheduleView extends AppCompatActivity {
             LinearLayout schedule = (LinearLayout)scrollLayout.getChildAt(numSlot * 2);
             LinearLayout timeSlot = (LinearLayout)schedule.getChildAt(0);
             TextView startTime = (TextView)timeSlot.getChildAt(0);
-            startTime.setText(scheduleList.get(numSchedule).startTime);
+            startTime.setText(scheduleList.get(numSchedule).startTime + " -");
             TextView endTime = (TextView)timeSlot.getChildAt(1);
             endTime.setText(scheduleList.get(numSchedule).endTime);
             LinearLayout reservedData = (LinearLayout)schedule.getChildAt(1);

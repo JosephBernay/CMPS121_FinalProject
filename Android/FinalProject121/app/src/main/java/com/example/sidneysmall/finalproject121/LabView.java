@@ -6,19 +6,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.util.Log;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.sidneysmall.finalproject121.response.ComputerResponse;
-import com.example.sidneysmall.finalproject121.response.MessageInfo;
 import com.example.sidneysmall.finalproject121.response.StatusResponse;
-import com.google.android.gms.appdatasearch.GetRecentContextCall;
 
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.*;
 
 import okhttp3.OkHttpClient;
@@ -44,7 +39,7 @@ public class LabView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_schedule);
+        setContentView(R.layout.activity_lab);
         appInfo = AppInfo.getInstance(this);
         Intent myIntent = getIntent();
         email = myIntent.getStringExtra("email");
@@ -95,7 +90,7 @@ public class LabView extends AppCompatActivity {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://lauren.pythonanywhere.com/welcome/default/")
+                .baseUrl("http://glcs-1251.appspot.com/welcome/default/")
                 .addConverterFactory(GsonConverterFactory.create())	//parse Gson string
                 .client(httpClient)	//add logging
                 .build();
@@ -152,7 +147,7 @@ public class LabView extends AppCompatActivity {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://lauren.pythonanywhere.com/welcome/default/")
+                .baseUrl("http://glcs-1251.appspot.com/welcome/default/")
                 .addConverterFactory(GsonConverterFactory.create())	//parse Gson string
                 .client(httpClient)	//add logging
                 .build();

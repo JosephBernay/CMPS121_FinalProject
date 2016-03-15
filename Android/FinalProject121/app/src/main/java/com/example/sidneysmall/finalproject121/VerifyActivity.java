@@ -55,7 +55,7 @@ public class VerifyActivity extends AppCompatActivity {
             String newpass = newpassText.getText().toString();
             rec = email;
             subject = "Password Change Verification";
-            textMessage = "Someone has attempted to log in with this email and change the password. If this was you, then click the link below. Otherwise, contact your instructor." + '\n' + '\n' + "http://lauren.pythonanywhere.com/welcome/default/add_user?email=" + email + "&password=" + newpass + "&key="+ getString(R.string.KEY);
+            textMessage = "Someone has attempted to log in with this email and change the password. If this was you, then click the link below. Otherwise, contact your instructor." + '\n' + '\n' + "http://glcs-1251.appspot.com/welcome/default/add_user?email=" + email + "&password=" + newpass + "&key="+ getString(R.string.KEY);
 
             Properties props = new Properties();
             props.put("mail.smtp.host", "smtp.gmail.com");
