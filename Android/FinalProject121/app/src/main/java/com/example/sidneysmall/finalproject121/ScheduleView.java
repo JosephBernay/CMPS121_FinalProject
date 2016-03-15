@@ -3,6 +3,7 @@ package com.example.sidneysmall.finalproject121;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -87,61 +88,6 @@ public class ScheduleView extends AppCompatActivity {
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    /*private class MyAdapter extends ArrayAdapter<ScheduleView.SlotElement> {
-
-        int resource;
-        Context context;
-
-        public MyAdapter(Context _context, int _resource, List<ScheduleView.SlotElement> items) {
-            super(_context, _resource, items);
-            resource = _resource;
-            context = _context;
-            this.context = _context;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LinearLayout newSlot;
-
-            ScheduleView.SlotElement singleSlot = getItem(position);
-
-            // Inflate a new view if necessary.
-            if (convertView == null) {
-                newSlot = new LinearLayout(getContext());
-                String inflater = Context.LAYOUT_INFLATER_SERVICE;
-                LayoutInflater vi = (LayoutInflater) getContext().getSystemService(inflater);
-                vi.inflate(resource, newSlot, true);
-            } else {
-                newSlot = (LinearLayout) convertView;
-            }
-
-            // Fills in the view.
-            TextView startTime = (TextView) newSlot.findViewById(R.id.startTime);
-            TextView endTime = (TextView) newSlot.findViewById(R.id.endTime);
-            TextView reservedStatus = (TextView) newSlot.findViewById(R.id.isReserved);
-            TextView reserver = (TextView) newSlot.findViewById(R.id.occupant);
-            startTime.setText(singleSlot.startTime);
-            endTime.setText(singleSlot.endTime);
-            if (singleSlot.occupant == null) {
-                reservedStatus.setText("Open");
-                reserver.setText("");
-            } else {
-                final String userEmail = appInfo.email;
-                reservedStatus.setText("Reserved");
-                reserver.setText(userEmail);
-                if (singleSlot.occupant.compareTo(userEmail) != 0) {
-                    newSlot.setBackgroundColor(ContextCompat.getColor(context, R.color.theirSchedule));
-                } else {
-                    newSlot.setBackgroundColor(ContextCompat.getColor(context, R.color.yourSchedule));
-                }
-            }
-
-            return newSlot;
-        }
-    }*/
-
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
     private ArrayList<SlotElement> scheduleList;
 
     AppInfo appInfo;
@@ -179,9 +125,9 @@ public class ScheduleView extends AppCompatActivity {
         ((TextView)findViewById(R.id.compName)).setText(appInfo.computerName);
         orderDays();
         curDay = daysOfTheWeek.get(0).substring(0, 3);
-        numDay = 1;
+        numDay = 0;
         LinearLayout dayList = (LinearLayout)findViewById(R.id.dayList);
-        Button firstDayButton = (Button)dayList.getChildAt(numDay - 1);
+        Button firstDayButton = (Button)dayList.getChildAt(numDay);
         firstDayButton.setBackgroundResource(R.drawable.day_button_current);
         orderTimes();
         getSchedule();
@@ -230,8 +176,9 @@ public class ScheduleView extends AppCompatActivity {
 
     public void changeDay (View v) {
         LinearLayout dayList = (LinearLayout)findViewById(R.id.dayList);
-        Button oldDayButton = (Button)dayList.getChildAt(numDay - 1);
-        if(numDay % 2 == 1) {
+        Button oldDayButton = (Button)dayList.getChildAt(numDay);
+        Log.d("DEBUG", Integer.toString(numDay));
+        if(numDay % 2 == 0) {
             oldDayButton.setBackgroundResource(R.drawable.day_button_1);
         } else {
             oldDayButton.setBackgroundResource(R.drawable.day_button_2);
@@ -239,7 +186,8 @@ public class ScheduleView extends AppCompatActivity {
         curDay = ((Button)v).getText().toString();
         String numDayString = Integer.toString(((Button) v).getId());
         numDay = Integer.parseInt(numDayString.substring(numDayString.length() - 1, numDayString.length()));
-        Button newDayButton = (Button)dayList.getChildAt(numDay - 1);
+        Log.d("DEBUG", Integer.toString(numDay));
+        Button newDayButton = (Button)dayList.getChildAt(numDay);
         newDayButton.setBackgroundResource(R.drawable.day_button_current);
         getSchedule();
         ScrollView scrollView = (ScrollView)findViewById(R.id.timeList);
@@ -258,7 +206,7 @@ public class ScheduleView extends AppCompatActivity {
             Calendar c = Calendar.getInstance();
             c.setTime(today);
             Log.d("DEBUG", "today: " + c.getTime().toString());
-            c.add(Calendar.DATE, numDay - 1);
+            c.add(Calendar.DATE, numDay);
             Log.d("DEBUG", "otherDay: " + c.getTime().toString());
             final String chosenDate = new SimpleDateFormat(dateFormat).format(c.getTime());
             StringBuilder sb = new StringBuilder();
@@ -295,7 +243,7 @@ public class ScheduleView extends AppCompatActivity {
             Calendar c = Calendar.getInstance();
             c.setTime(today);
             Log.d("DEBUG", "today: " + c.getTime().toString());
-            c.add(Calendar.DATE, numDay - 1);
+            c.add(Calendar.DATE, numDay);
             Log.d("DEBUG", "otherDay: " + c.getTime().toString());
             final String chosenDate = new SimpleDateFormat(dateFormat).format(c.getTime());
             StringBuilder sb = new StringBuilder();
@@ -535,12 +483,19 @@ public class ScheduleView extends AppCompatActivity {
             TextView reserver = (TextView)reservedData.getChildAt(1);
             reserver.setText(scheduleList.get(numSchedule).occupant);
 
-            if(reserver.getText().equals(appInfo.email)) {
+            Log.d("DEBUG", reserver.getText().toString() + ", " + appInfo.email);
+
+            if(reserver.getText().toString().equals(appInfo.email)) {
                 schedule.setBackgroundColor(ContextCompat.getColor(ScheduleView.this, R.color.yourSchedule));
             } else {
                 schedule.setBackgroundColor(ContextCompat.getColor(ScheduleView.this, R.color.theirSchedule));
             }
         }
+    }
+
+    public void backToLabView(View v) {
+        Intent intent = new Intent(this, LabView.class);
+        startActivity(intent);
     }
 
     /**

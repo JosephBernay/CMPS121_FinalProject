@@ -1,7 +1,7 @@
 <resources>
     <string name="KEY">GAmaW6d90bvBKDOw60b68e9t10356Dqy</string>
 
-    <string name="app_name">FinalProject121</string>
+    <string name="app_name">UCSC GLCS</string>
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->

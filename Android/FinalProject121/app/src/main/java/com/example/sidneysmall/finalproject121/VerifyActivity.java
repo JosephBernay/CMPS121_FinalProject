@@ -53,9 +53,9 @@ public class VerifyActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please Fill In Both Fields", Toast.LENGTH_LONG).show();
         }else if(newpassText.getText().toString().equals(confirmText.getText().toString())){
             String newpass = newpassText.getText().toString();
-            rec = "aparvis@ucsc.edu";
+            rec = email;
             subject = "Password Change Verification";
-            textMessage = "Someone has attempted to log on with this email and change the password. If the was you then click the link below otherwise contact your instructor.\n\nhttp://lauren.pythonanywhere.com/welcome/default/add_user?email=" + email + "&password=" + newpass + "&key="+ getString(R.string.KEY);
+            textMessage = "Someone has attempted to log in with this email and change the password. If this was you, then click the link below. Otherwise, contact your instructor." + '\n' + '\n' + "http://lauren.pythonanywhere.com/welcome/default/add_user?email=" + email + "&password=" + newpass + "&key="+ getString(R.string.KEY);
 
             Properties props = new Properties();
             props.put("mail.smtp.host", "smtp.gmail.com");

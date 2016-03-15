@@ -22,8 +22,8 @@ public class AppInfo {
         if(instance == null) {
             instance = new AppInfo();
             instance.key = "GAmaW6d90bvBKDOw60b68e9t10356Dqy";
-            instance.email = "jbernay@ucsc.edu";
-            instance.computerName = "SEPHIROTH";
+            instance.email = "";
+            instance.computerName = "";
         }
         return instance;
     }

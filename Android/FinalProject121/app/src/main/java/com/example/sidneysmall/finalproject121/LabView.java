@@ -40,10 +40,12 @@ public class LabView extends AppCompatActivity {
     public static int ViewedSummaryNum = 0;
     private String currentComputer;
     private Dictionary<String, String> CompLocation = new Hashtable<>();
+    AppInfo appInfo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
+        appInfo = AppInfo.getInstance(this);
         Intent myIntent = getIntent();
         email = myIntent.getStringExtra("email");
     }
@@ -168,7 +170,7 @@ public class LabView extends AppCompatActivity {
                 if (cResponse.body().response.equals("ok")) {
                     ((TextView) findViewById(R.id.ClickedCompName)).setText(currentComputer);
                     relCur.setVisibility(View.VISIBLE);
-                    for (int i = ((cResponse.body().messageInfo.size())-1); i >= 0; --i) {
+                    for (int i = ((cResponse.body().messageInfo.size()) - 1); i >= 0; --i) {
                         String ts = cResponse.body().messageInfo.get(i).timeCreated;
                         String pr = cResponse.body().messageInfo.get(i).problem;
                         ListElement temp = new ListElement(ts, pr, i);
@@ -197,9 +199,12 @@ public class LabView extends AppCompatActivity {
     }
 
     public void Reserve(View v){
-        /*Intent intent = new Intent(this, Reserve.class);
-        intent.putExtra(currentComputer,currentComputer);
-        startActivity(intent);*/
+        Intent intent = new Intent(this, ScheduleView.class);
+        appInfo.computerName = currentComputer;
+        if(appInfo.email.equals("")) {
+            appInfo.email = email;
+        }
+        startActivity(intent);
     }
 
     public void History(View v){
