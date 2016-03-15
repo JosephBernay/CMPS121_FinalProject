@@ -98,13 +98,7 @@ public class LoginActivity extends AppCompatActivity {
         key = getString(R.string.KEY);
         TextView passwordText = (TextView)findViewById(R.id.password);
         TextView emailText = (TextView)findViewById(R.id.email);
-        if((passwordText != null || passwordText.getText().equals("")) && (emailText != null || emailText.getText().equals(""))){
-            Button login = (Button)findViewById(R.id.loginbutton);
-            login.setClickable(false);
-        }else{
-            Button login = (Button)findViewById(R.id.loginbutton);
-            login.setClickable(true);
-        }
+
 
     }
 
@@ -125,84 +119,89 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login(View v){
+        TextView passwordText = (TextView) findViewById(R.id.password);
+        TextView emailText = (TextView) findViewById(R.id.email);
+        if((passwordText == null || passwordText.getText().equals("")) && (emailText == null || emailText.getText().equals(""))){
+            Toast.makeText(getApplicationContext(), "Please fill in both fields", Toast.LENGTH_LONG).show();
+        }else {
+            password = passwordText.getText().toString();
+            email = emailText.getText().toString();
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+            OkHttpClient httpClient = new OkHttpClient.Builder()
+                    .addInterceptor(logging)
+                    .build();
 
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://lauren.pythonanywhere.com/welcome/default/")
+                    .addConverterFactory(GsonConverterFactory.create())    //parse Gson string
+                    .client(httpClient)    //add logging
+                    .build();
 
+            GetUserService service = retrofit.create(GetUserService.class);
 
-        TextView passwordText = (TextView)findViewById(R.id.password);
-        password = passwordText.getText().toString();
-        TextView emailText = (TextView)findViewById(R.id.email);
-        email = emailText.getText().toString();
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient httpClient = new OkHttpClient.Builder()
-                .addInterceptor(logging)
-                .build();
+            Call<GetUserResponse> queryResponseCall =
+                    service.getUser(email, password, key);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://lauren.pythonanywhere.com/welcome/default/")
-                .addConverterFactory(GsonConverterFactory.create())	//parse Gson string
-                .client(httpClient)	//add logging
-                .build();
+            queryResponseCall.enqueue(new Callback<GetUserResponse>() {
+                @Override
+                public void onResponse(Response<GetUserResponse> response) {
+                    if (response.body().getResponse().equals("ok") && response.body().getUserInfo().getLogin().equals("success")) {
+                        if (password.equals("temp")) {
+                            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+                            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+                            OkHttpClient httpClient = new OkHttpClient.Builder()
+                                    .addInterceptor(logging)
+                                    .build();
 
-        GetUserService service = retrofit.create(GetUserService.class);
+                            Retrofit retrofit = new Retrofit.Builder()
+                                    .baseUrl("http://lauren.pythonanywhere.com/welcome/default/")
+                                    .addConverterFactory(GsonConverterFactory.create())    //parse Gson string
+                                    .client(httpClient)    //add logging
+                                    .build();
 
-        Call<GetUserResponse> queryResponseCall =
-                service.getUser(email, password, key);
+                            AddUserService service = retrofit.create(AddUserService.class);
 
-        queryResponseCall.enqueue(new Callback<GetUserResponse>() {
-            @Override
-            public void onResponse(Response<GetUserResponse> response) {
-                if(response.body().getResponse().equals("ok")) {
-                    if(password.equals("temp")){
-                        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-                        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-                        OkHttpClient httpClient = new OkHttpClient.Builder()
-                                .addInterceptor(logging)
-                                .build();
+                            Call<AddUserResponse> queryResponseCall =
+                                    service.addUser(email, password, key);
 
-                        Retrofit retrofit = new Retrofit.Builder()
-                                .baseUrl("http://lauren.pythonanywhere.com/welcome/default/")
-                                .addConverterFactory(GsonConverterFactory.create())	//parse Gson string
-                                .client(httpClient)	//add logging
-                                .build();
+                            //Call retrofit asynchronously
+                            queryResponseCall.enqueue(new Callback<AddUserResponse>() {
+                                @Override
+                                public void onResponse(Response<AddUserResponse> response) {
+                                    if (response.body().getResponse().equals("ok")) {
+                                        Intent myIntent = new Intent(LoginActivity.this, VerifyActivity.class);
+                                        myIntent.putExtra("key", email); //Optional parameters
+                                        startActivity(myIntent);
+                                    } else if (response.body().getResponse().equals("user not authorized")) {
+                                        Log.i(LOG, "add user not authorized");
+                                        Toast.makeText(getApplicationContext(), "add user not authorized", Toast.LENGTH_LONG).show();
 
-                        AddUserService service = retrofit.create(AddUserService.class);
-
-                        Call<AddUserResponse> queryResponseCall =
-                                service.addUser(email, password, key);
-
-                        //Call retrofit asynchronously
-                        queryResponseCall.enqueue(new Callback<AddUserResponse>() {
-                            @Override
-                            public void onResponse(Response<AddUserResponse> response) {
-                                if(response.body().getResponse().equals("ok")) {
-                                    Intent myIntent = new Intent(LoginActivity.this, VerifyActivity.class);
-                                    myIntent.putExtra("key", email); //Optional parameters
-                                    startActivity(myIntent);
+                                    }
                                 }
-                                else if (response.body().getResponse().equals("user not authorized")){
-                                    Log.i(LOG, "add user not authorized");
-                                }
-                            }
 
-                            @Override
-                            public void onFailure(Throwable t) {
-                                // Log error here since request failed
-                            }
-                        });
+                                @Override
+                                public void onFailure(Throwable t) {
+                                    // Log error here since request failed
+                                }
+                            });
+                        }
+                        else {
+                            Intent myIntent = new Intent(LoginActivity.this, LabView.class);
+                            myIntent.putExtra("email", email);
+                            startActivity(myIntent);
+                        }
                     }else{
-                        Intent myIntent = new Intent(LoginActivity.this, LabView.class);
-                        startActivity(myIntent);
+                        Toast.makeText(getApplicationContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
                     }
-
                 }
-            }
 
-            @Override
-            public void onFailure(Throwable t) {
-                // Log error here since request failed
-            }
-        });
+                @Override
+                public void onFailure(Throwable t) {
+                    // Log error here since request failed
+                }
+            });
+        }
     }
 
 

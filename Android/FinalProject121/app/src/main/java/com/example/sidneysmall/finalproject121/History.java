@@ -38,7 +38,7 @@ public class History extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_schedule);
+        setContentView(R.layout.report_history);
     }
 
     protected void onResume(){
@@ -61,7 +61,7 @@ public class History extends AppCompatActivity{
         final CompInfo service = retrofit.create(CompInfo.class);
 
         Call<ComputerResponse> queryResponseCall =
-                service.getInfo(comp);
+                service.getInfo(comp,getString(R.string.KEY));
 
         //Call retrofit asynchronously
         queryResponseCall.enqueue(new Callback<ComputerResponse>() {
@@ -90,7 +90,13 @@ public class History extends AppCompatActivity{
     }
     public interface CompInfo {
         @GET("get_messages")
-        Call<ComputerResponse> getInfo(@Query("computerName") String currentComputer);
+        Call<ComputerResponse> getInfo(@Query("computerName") String currentComputer,
+                                       @Query("key") String key);
+    }
+
+    public void toLabView(View v){
+        Intent intent = new Intent(this, LabView.class);
+        startActivity(intent);
     }
 
 }

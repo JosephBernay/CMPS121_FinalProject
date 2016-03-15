@@ -2,6 +2,7 @@ package com.example.sidneysmall.finalproject121;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,8 +52,8 @@ public class MyAdapter extends ArrayAdapter<ListElement> {
         TextView sum = (TextView) newView.findViewById(R.id.Summary);
         Button but = (Button) newView.findViewById(R.id.HistoryButton);
         but.setTag(w.elementNumber);
-        TS.setText(new StringBuilder().append(TS.getText()).append(w.timeStamp).toString());
-        sum.setText(new StringBuilder().append(sum.getText()).append(w.summary).toString());
+        TS.setText("Date: "+ w.timeStamp + "  ");
+        sum.setText("Problem: " + w.summary);
 
 
         // Sets a listener for the button, and a tag for the button as well.

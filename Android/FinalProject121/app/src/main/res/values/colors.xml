@@ -6,4 +6,5 @@
     <color name="emptySchedule">#FFFFFF</color>
     <color name="yourSchedule">#AFE677</color>
     <color name="theirSchedule">#E67777</color>
+    <color name="black">#000000</color>
 </resources>
