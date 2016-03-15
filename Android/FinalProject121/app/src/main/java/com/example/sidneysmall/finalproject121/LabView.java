@@ -43,6 +43,9 @@ public class LabView extends AppCompatActivity {
         appInfo = AppInfo.getInstance(this);
         Intent myIntent = getIntent();
         email = myIntent.getStringExtra("email");
+        if(appInfo.email.equals("")) {
+            appInfo.email = email;
+        }
     }
 
     private MyAdapter adp;
@@ -196,9 +199,6 @@ public class LabView extends AppCompatActivity {
     public void Reserve(View v){
         Intent intent = new Intent(this, ScheduleView.class);
         appInfo.computerName = currentComputer;
-        if(appInfo.email.equals("")) {
-            appInfo.email = email;
-        }
         startActivity(intent);
     }
 

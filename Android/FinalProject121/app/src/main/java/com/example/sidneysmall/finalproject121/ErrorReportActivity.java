@@ -49,6 +49,7 @@ public class ErrorReportActivity extends AppCompatActivity {
     String error;
     String key;
     String details;
+    AppInfo appInfo;
 
 
     @Override
@@ -62,7 +63,8 @@ public class ErrorReportActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
         dropdown.setAdapter(adapter);
         Intent intent = getIntent();
-        email = intent.getStringExtra("email");
+        appInfo = AppInfo.getInstance(this);
+        email = appInfo.email;
         comp = intent.getStringExtra("currentComputer");
         room = intent.getStringExtra("roomNumber");
         key = getString(R.string.KEY);
@@ -116,6 +118,8 @@ public class ErrorReportActivity extends AppCompatActivity {
                         sb.append("<br/>");
                         sb.append("<br/>");
                         sb.append("<b>Follow-up address:</b> " + email);
+                        sb.append("<br/>");
+                        sb.append("<br/>");
                         sb.append("When the computer has been fixed, please hit the following link: <br/>");
                         sb.append("http://glcs-1251.appspot.com/welcome/default/post_message/?computerName=" + comp + "&computerNumber=" + room + "&messageData=Serviced%20by%20BELS&problem=fixed&key=" + getString(R.string.KEY));
                         textMessage = sb.toString();

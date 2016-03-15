@@ -86,6 +86,7 @@ public class LoginActivity extends AppCompatActivity {
     String key;
     String email;
     String password;
+    AppInfo appInfo;
 
     String LOG = "Print: ";
 
@@ -98,8 +99,7 @@ public class LoginActivity extends AppCompatActivity {
         key = getString(R.string.KEY);
         TextView passwordText = (TextView)findViewById(R.id.password);
         TextView emailText = (TextView)findViewById(R.id.email);
-
-
+        appInfo = AppInfo.getInstance(this);
     }
 
     public interface AddUserService {
