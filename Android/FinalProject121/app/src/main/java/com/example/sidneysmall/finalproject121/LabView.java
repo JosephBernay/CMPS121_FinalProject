@@ -120,7 +120,7 @@ public class LabView extends AppCompatActivity {
                         }else{
                             //put red X
                             findViewById(currentComputerID).setBackgroundResource(R.drawable.redx);
-                            findViewById(currentComputerID).setClickable(false);
+                            findViewById(currentComputerID).setClickable(true);
                         }
                     }else{
                         //there was an error, put a little error picture
@@ -168,7 +168,7 @@ public class LabView extends AppCompatActivity {
                 if (cResponse.body().response.equals("ok")) {
                     ((TextView) findViewById(R.id.ClickedCompName)).setText(currentComputer);
                     relCur.setVisibility(View.VISIBLE);
-                    for (int i = 0; i < cResponse.body().messageInfo.size(); i++) {
+                    for (int i = ((cResponse.body().messageInfo.size())-1); i >= 0; --i) {
                         String ts = cResponse.body().messageInfo.get(i).timeCreated;
                         String pr = cResponse.body().messageInfo.get(i).problem;
                         ListElement temp = new ListElement(ts, pr, i);
