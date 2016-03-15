@@ -22,6 +22,7 @@
         </activity>
         <activity android:name=".VerifyActivity"></activity>
         <activity android:name=".LabView"></activity>
+        <activity android:name=".ScheduleView"></activity>
     </application>
 
 </manifest>
