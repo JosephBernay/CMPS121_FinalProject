@@ -4,6 +4,7 @@ package com.example.sidneysmall.finalproject121;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.util.Log;
 import android.widget.ListView;
@@ -158,7 +159,7 @@ public class LabView extends AppCompatActivity {
         CompInfo service = retrofit.create(CompInfo.class);
 
         Call<ComputerResponse> queryResponseCall =
-                service.getInfo(currentComputer,getString(R.string.KEY));
+                service.getInfo(currentComputer, getString(R.string.KEY));
 
         //Call retrofit asynchronously
         queryResponseCall.enqueue(new Callback<ComputerResponse>() {
@@ -212,6 +213,19 @@ public class LabView extends AppCompatActivity {
     public void BackToView(View v){
         //relLab.layout(0,0,0,0);
         relCur.setVisibility(View.INVISIBLE);
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            if(relCur.getVisibility() == View.VISIBLE) {
+                BackToView(findViewById(R.id.button));
+            } else {
+                finish();
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     public interface CompInfo {

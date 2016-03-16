@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -28,10 +29,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-//import com.cmps121.hw3.localchat.response.ChatPost;
-//import com.cmps121.hw3.localchat.response.ScheduleResponse;
-//import com.cmps121.hw3.localchat.response.ResultList;
-
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -49,6 +46,9 @@ public class ScheduleView extends AppCompatActivity {
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+    /*
+    Object representing data to be entered into a time slot in the schedule
+     */
     private class SlotElement {
         SlotElement() {};
 
@@ -68,10 +68,8 @@ public class ScheduleView extends AppCompatActivity {
     private ArrayList<SlotElement> scheduleList;
 
     AppInfo appInfo;
-    private String nickname;
     SharedPreferences settings;
 
-    //private ScheduleView.MyAdapter adapter;
     List<String> daysOfTheWeek = new ArrayList<String>(Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"));
     String dateFormat = "MM-dd-yyyy";
     SimpleDateFormat dateFormatter = new SimpleDateFormat(dateFormat);
@@ -99,17 +97,26 @@ public class ScheduleView extends AppCompatActivity {
         settings = PreferenceManager.getDefaultSharedPreferences(this);
 
         appInfo = AppInfo.getInstance(this);
+
+        //label screen with name of chosen computer
         ((TextView)findViewById(R.id.compName)).setText(appInfo.computerName);
         orderDays();
+
+        //appropriately display the chosen day's button
         curDay = daysOfTheWeek.get(0).substring(0, 3);
         numDay = 0;
         LinearLayout dayList = (LinearLayout)findViewById(R.id.dayList);
         Button firstDayButton = (Button)dayList.getChildAt(numDay);
         firstDayButton.setBackgroundResource(R.drawable.day_button_current);
+
+        //display today's schedule data
         orderTimes();
         getSchedule();
     }
 
+    /*
+    Find the correct order of the next seven days, starting with today
+     */
     private void orderDays() {
         SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
         Date date = new Date();
@@ -128,6 +135,9 @@ public class ScheduleView extends AppCompatActivity {
         }
     }
 
+    /*
+    Give the schedule's time slots their default settings
+     */
     private void orderTimes() {
 
         for(int numSlot = 0; numSlot < timeSegments.size(); ++numSlot) {
@@ -151,10 +161,13 @@ public class ScheduleView extends AppCompatActivity {
 
     }
 
+    /*
+    Change the currently chosen day to that corresponding to the day button pressed by the user,
+        display that day's schedule, and scroll to the top
+     */
     public void changeDay (View v) {
         LinearLayout dayList = (LinearLayout)findViewById(R.id.dayList);
         Button oldDayButton = (Button)dayList.getChildAt(numDay);
-        Log.d("DEBUG", Integer.toString(numDay));
         if(numDay % 2 == 0) {
             oldDayButton.setBackgroundResource(R.drawable.day_button_1);
         } else {
@@ -162,9 +175,7 @@ public class ScheduleView extends AppCompatActivity {
         }
         curDay = ((Button)v).getText().toString();
         String numDayString = ((Button) v).getTag().toString();
-        Log.d("DEBUG", "numDayString: " + numDayString);
         numDay = Integer.parseInt(numDayString.substring(numDayString.length() - 1, numDayString.length())) - 1;
-        Log.d("DEBUG", Integer.toString(numDay));
         Button newDayButton = (Button)dayList.getChildAt(numDay);
         newDayButton.setBackgroundResource(R.drawable.day_button_current);
         getSchedule();
@@ -172,21 +183,27 @@ public class ScheduleView extends AppCompatActivity {
         scrollView.fullScroll(ScrollView.FOCUS_UP);
     }
 
+    /*
+    If the clicked time slot is available, ask the user if they would like to reserve that time slot.
+    If the clicked time slot is reserved by the same user, ask the user if they would like to cancel
+        the reservation.
+     */
     public void askIfPost (View v) {
         LinearLayout timeSlot = (LinearLayout)v;
 
         if((((TextView)((LinearLayout)timeSlot.getChildAt(1)).getChildAt(0)).getText().equals("Available"))) {
+            //if the clicked time slot is available, ask the user if they would like to reserve that time slot
             LinearLayout timeLayout = (LinearLayout)timeSlot.getChildAt(0);
             final String startTime = ((TextView)(timeLayout).getChildAt(0)).getText().toString().substring(0,
                     ((TextView)(timeLayout).getChildAt(0)).getText().toString().length() - 2);
             final String endTime = ((TextView)(timeLayout).getChildAt(1)).getText().toString();
+
             Date today = new Date();
             Calendar c = Calendar.getInstance();
             c.setTime(today);
-            Log.d("DEBUG", "today: " + c.getTime().toString());
             c.add(Calendar.DATE, numDay);
-            Log.d("DEBUG", "otherDay: " + c.getTime().toString());
             final String chosenDate = new SimpleDateFormat(dateFormat).format(c.getTime());
+
             StringBuilder sb = new StringBuilder();
             sb.append("Would you like to schedule ");
             sb.append(appInfo.computerName);
@@ -198,6 +215,7 @@ public class ScheduleView extends AppCompatActivity {
             sb.append(chosenDate);
             sb.append("?");
             String message = sb.toString();
+
             AlertDialog.Builder builder = new AlertDialog.Builder(ScheduleView.this);
             builder.setMessage(message)
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -213,17 +231,19 @@ public class ScheduleView extends AppCompatActivity {
             // Create the AlertDialog object and return it
             builder.create().show();
         } else if(((TextView)((LinearLayout)timeSlot.getChildAt(1)).getChildAt(1)).getText().equals(appInfo.email)) {
+            //if the clicked time slot is reserved by the same user, ask the user if they would like to cancel
+            //  the reservation
             LinearLayout timeLayout = (LinearLayout)timeSlot.getChildAt(0);
             final String startTime = ((TextView)(timeLayout).getChildAt(0)).getText().toString().substring(0,
                     ((TextView)(timeLayout).getChildAt(0)).getText().toString().length() - 2);
             final String endTime = ((TextView)(timeLayout).getChildAt(1)).getText().toString();
+
             Date today = new Date();
             Calendar c = Calendar.getInstance();
             c.setTime(today);
-            Log.d("DEBUG", "today: " + c.getTime().toString());
             c.add(Calendar.DATE, numDay);
-            Log.d("DEBUG", "otherDay: " + c.getTime().toString());
             final String chosenDate = new SimpleDateFormat(dateFormat).format(c.getTime());
+
             StringBuilder sb = new StringBuilder();
             sb.append("Would you like to cancel your reservation of ");
             sb.append(appInfo.computerName);
@@ -234,6 +254,7 @@ public class ScheduleView extends AppCompatActivity {
             sb.append(" on ");
             sb.append(chosenDate);
             sb.append("?");
+
             String message = sb.toString();
             AlertDialog.Builder builder = new AlertDialog.Builder(ScheduleView.this);
             builder.setMessage(message)
@@ -252,6 +273,9 @@ public class ScheduleView extends AppCompatActivity {
         }
     }
 
+    /*
+    Send new schedule data to the server
+     */
     private void postSchedule(String beginTime, String endTime, String dateReserved) {
         String computerName = appInfo.computerName;
         String email = appInfo.email;
@@ -280,8 +304,8 @@ public class ScheduleView extends AppCompatActivity {
             @Override
             public void onResponse(Response<SchedulePost> response) {
                 if(response.body().response.compareTo("ok") == 0) {
-                    Log.d("DEBUG", "Should be calling getSchedule here");
 
+                    //retrieve new schedule data from the server
                     getSchedule();
                 }
             }
@@ -293,6 +317,9 @@ public class ScheduleView extends AppCompatActivity {
         });
     }
 
+    /*
+    Remove chosen schedule data from the server
+     */
     private void cancelSchedule(String beginTime, String endTime, String dateReserved) {
         String computerName = appInfo.computerName;
         String email = appInfo.email;
@@ -332,8 +359,10 @@ public class ScheduleView extends AppCompatActivity {
         });
     }
 
+    /*
+    Retrieve schedule data from the server
+     */
     private void getSchedule() {
-        Log.d("DEBUG", "Got into getSchedule");
         String key = appInfo.key;
         String computerName = appInfo.computerName;
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
@@ -358,12 +387,8 @@ public class ScheduleView extends AppCompatActivity {
         queryResponseCall.enqueue(new Callback<ScheduleResponse>() {
             @Override
             public void onResponse(Response<ScheduleResponse> response) {
-                Log.d("DEBUG", "Got into onResponse");
                 if (response.body().response.compareTo("ok") == 0) {
-                    Log.d("DEBUG", "Got a good response");
                     List<ScheduleInfo> resultList = response.body().scheduleInfo;
-
-                    Log.d("DEBUG", "Result List: " + resultList.toString());
 
                     scheduleList = new ArrayList<SlotElement>();
 
@@ -371,11 +396,12 @@ public class ScheduleView extends AppCompatActivity {
                         Date today;
                         Date otherDay;
                         try {
-                            Log.d("DEBUG", "Got into the try block");
                             today = dateFormatter.parse(new SimpleDateFormat(dateFormat).format(new Date()));
                             otherDay = dateFormatter.parse(resultList.get(i).dateReserved);
+
+                            //if today is the same day as that in the retrieved schedule data, add it
+                            //  to the schedule list
                             if (today.compareTo(otherDay) <= 0) {
-                                Log.d("DEBUG", "Got the same day");
                                 Calendar calendar = Calendar.getInstance();
                                 calendar.setTime(otherDay);
 
@@ -384,37 +410,28 @@ public class ScheduleView extends AppCompatActivity {
                                 switch (calendar.get(Calendar.DAY_OF_WEEK)) {
                                     case (Calendar.SUNDAY):
                                         resDayOfWeek = "Sun";
-                                        Log.d("DEBUG", "Sun");
                                         break;
                                     case (Calendar.MONDAY):
                                         resDayOfWeek = "Mon";
-                                        Log.d("DEBUG", "Mon");
                                         break;
                                     case (Calendar.TUESDAY):
                                         resDayOfWeek = "Tue";
-                                        Log.d("DEBUG", "Tue");
                                         break;
                                     case (Calendar.WEDNESDAY):
                                         resDayOfWeek = "Wed";
-                                        Log.d("DEBUG", "Wed");
                                         break;
                                     case (Calendar.THURSDAY):
                                         resDayOfWeek = "Thu";
-                                        Log.d("DEBUG", "Thu");
                                         break;
                                     case (Calendar.FRIDAY):
                                         resDayOfWeek = "Fri";
-                                        Log.d("DEBUG", "Fri");
                                         break;
                                     case (Calendar.SATURDAY):
                                         resDayOfWeek = "Sat";
-                                        Log.d("DEBUG", "Sat");
                                         break;
                                     default:
                                         break;
                                 }
-
-                                Log.d("DEBUG", "curDay: " + curDay);
 
                                 if (curDay.equals(resDayOfWeek)) {
                                     SlotElement le = new SlotElement(resultList.get(i).beginTime,
@@ -439,12 +456,13 @@ public class ScheduleView extends AppCompatActivity {
         });
     }
 
+    /*
+    Update the display with newest schedule data
+     */
     private void updateSchedules() {
-        Log.d("DEBUG", "Got into updateSchedules");
         orderTimes();
 
         for(int numSchedule = 0; numSchedule < scheduleList.size(); ++numSchedule) {
-            Log.d("DEBUG", "Got into the update for loop");
             String timeSegment = scheduleList.get(numSchedule).startTime + " -," + scheduleList.get(numSchedule).endTime;
             int numSlot = timeSegments.indexOf(timeSegment);
 
@@ -461,8 +479,6 @@ public class ScheduleView extends AppCompatActivity {
             TextView reserver = (TextView)reservedData.getChildAt(1);
             reserver.setText(scheduleList.get(numSchedule).occupant);
 
-            Log.d("DEBUG", reserver.getText().toString() + ", " + appInfo.email);
-
             if(reserver.getText().toString().equals(appInfo.email)) {
                 schedule.setBackgroundColor(ContextCompat.getColor(ScheduleView.this, R.color.yourSchedule));
             } else {
@@ -471,9 +487,24 @@ public class ScheduleView extends AppCompatActivity {
         }
     }
 
+    /*
+    Go back to the lab view
+     */
     public void backToLabView(View v) {
         Intent intent = new Intent(this, LabView.class);
         startActivity(intent);
+    }
+
+    /*
+    If the device's back button is pressed, close this activity
+     */
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     /**

@@ -21,6 +21,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -76,6 +77,15 @@ public class VerifyActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "The two passwords do not match", Toast.LENGTH_LONG).show();
         }
 
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     class RetrieveFeedTask extends AsyncTask<String, Void, String> {
